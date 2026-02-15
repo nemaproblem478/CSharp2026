@@ -1,4 +1,4 @@
-﻿
+﻿using ProductManager.CommonComponents.Enums;
 namespace ProductManager.DBModels
 {
     public class WarehouseDBModel

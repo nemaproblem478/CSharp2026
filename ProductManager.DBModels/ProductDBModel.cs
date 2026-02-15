@@ -1,11 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Text;
-using System.Threading.Tasks;
+﻿using ProductManager.CommonComponents.Enums;
 
-namespace ProductManager.ProductManagerDBModels
+namespace ProductManager.DBModels
 {
     public class ProductDBModel
     {
