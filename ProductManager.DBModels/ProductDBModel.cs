@@ -16,7 +16,6 @@ namespace ProductManager.ProductManagerDBModels
         private double _price;
         private Category _category;
         private string _description;
-        private double _totalCost;
 
         public Guid ProductId { get => _productId; }
         public Guid WarehouseId { get => _warehouseId; set => _warehouseId = value; }
@@ -25,7 +24,6 @@ namespace ProductManager.ProductManagerDBModels
         public double Price { get => _price; set => _price = value; }
         public Category Category { get => _category; set => _category = value; }
         public string Description { get => _description; set => _description = value; }
-        public double TotalCost { get => _totalCost; }
 
         private ProductDBModel() 
         {
