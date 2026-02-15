@@ -7,13 +7,11 @@ namespace ProductManager.DBModels
         private string _name;
         private Location _location;
         private List<ProductDBModel> _products;
-        private double _totalCost;
 
         public Guid Id { get => _id; }
         public string Name { get => _name; set => _name = value; }
         public Location Location { get => _location; set => _location = value; }
         public List<ProductDBModel> Products { get => _products; set => _products = value; }
-        public double TotalCost { get => _totalCost; }
 
         private WarehouseDBModel()
         {
