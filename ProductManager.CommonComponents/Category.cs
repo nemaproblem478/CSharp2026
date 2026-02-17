@@ -5,9 +5,9 @@ namespace ProductManager.CommonComponents
     public enum Category
     {
         ElectricGuitars,
-        AcousticGuitars,
+        GuitarPedals,
         Amplifiers,
-        StudioEquipment,
+        Synthesizer,
         Commutation
     }
 }
