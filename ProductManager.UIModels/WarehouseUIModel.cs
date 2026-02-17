@@ -22,13 +22,12 @@ namespace ProductManager.UIModels
         {
             _products = new List<ProductDBModel>();
         }
-        public WarehouseUIModel(WarehouseDBModel dbModel)
+        public WarehouseUIModel(WarehouseDBModel dbModel) : this()
         {
             _dbModel = dbModel;
             _id = dbModel.Id;
             _name = dbModel.Name;
             _location = dbModel.Location;
-            _products = dbModel.Products;
             calculateTotalCost();
         }
         public void calculateTotalCost()
