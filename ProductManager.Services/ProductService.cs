@@ -10,6 +10,6 @@ namespace ProductManager.Services
 {
     public class ProductService
     {
-       
+       private StorageService _storage;
     }
 }
