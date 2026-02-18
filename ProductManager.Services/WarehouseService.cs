@@ -30,7 +30,6 @@ namespace ProductManager.Services
         {
             WarehouseDBModel dbModel;
 
-            
             dbModel = _storage.GetWarehouse(uiModel.Id);
             if (dbModel != null)
             {

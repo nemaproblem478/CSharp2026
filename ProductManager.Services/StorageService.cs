@@ -66,6 +66,12 @@ namespace ProductManager.Services
             _warehouses.Add(dbModel);
             return true;
         }
+        public bool AddProduct(ProductDBModel dbModel)
+        {
+            LoadData();
+            _products.Add(dbModel);
+            return true;
+        }
     }
 
 }
