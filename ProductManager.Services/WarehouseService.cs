@@ -29,17 +29,18 @@ namespace ProductManager.Services
         public void SaveWarehouse(WarehouseUIModel uiModel)
         {
             WarehouseDBModel dbModel;
-            if (uiModel == null)
+
+            
+            dbModel = _storage.GetWarehouse(uiModel.Id);
+            if (dbModel != null)
             {
-                dbModel = new WarehouseDBModel(uiModel.Name, uiModel.Location);
-                _storage.AddWarehouse(dbModel);
+                dbModel.Name = uiModel.Name;
+                dbModel.Location = uiModel.Location;
             }
             else
             {
-                dbModel = _storage.GetWarehouse(uiModel.Id);
-                dbModel.Name = uiModel.Name;
-                dbModel.Location = uiModel.Location;
-                //_storage.SaveChanges();
+                dbModel = new WarehouseDBModel(uiModel.Name, uiModel.Location);
+                _storage.AddWarehouse(dbModel);
             }
         }
     }
