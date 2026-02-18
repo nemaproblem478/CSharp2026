@@ -8,6 +8,7 @@
 
 	<ItemGroup>
 		<ProjectReference Include="..\ProductManager.DBModels\ProductManager.DBModels.csproj" />
+		<ProjectReference Include="..\ProductManager.UIModels\ProductManager.UIModels.csproj" />
 	</ItemGroup>
 
 </Project>

@@ -1,7 +1,6 @@
 ﻿using ProductManager.DBModels;
-using ProductManager.Services;
 
-namespace ProductManager.ProductManager.Services
+namespace ProductManager.Services
 {
     public class StorageService
     {
@@ -16,6 +15,16 @@ namespace ProductManager.ProductManager.Services
             _products = FakeStorage.Products.ToList();
         }
 
+        public WarehouseDBModel GetWarehouse(Guid id)
+        {
+            LoadData();
+            foreach (var warehouse in _warehouses)
+            {
+                if (warehouse.Id == id)
+                    return warehouse;
+            }
+            return null;
+        }
         public IEnumerable<WarehouseDBModel> GetWarehouses()
         {
             LoadData();
@@ -25,6 +34,18 @@ namespace ProductManager.ProductManager.Services
                 resultList.Add(warehouse);
             }
             return resultList;
+        }
+        public ProductDBModel GetProduct(Guid id)
+        {
+            LoadData();
+            foreach (var product in _products)
+            {
+                if (product.ProductId == id)
+                {
+                    return product;
+                }
+            }
+            return null;
         }
         public IEnumerable<ProductDBModel> GetProducts(Guid warehouseId)
         {
@@ -38,6 +59,12 @@ namespace ProductManager.ProductManager.Services
                 }
             }
             return resultList;
+        }
+        public bool AddWarehouse(WarehouseDBModel dbModel)
+        {
+            LoadData();
+            _warehouses.Add(dbModel);
+            return true;
         }
     }
 
