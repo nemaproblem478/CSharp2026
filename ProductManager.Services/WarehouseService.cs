@@ -16,7 +16,7 @@ namespace ProductManager.Services
         public WarehouseUIModel GetWarehouseUI(Guid id)
         {
             var dbModel = _storage.GetWarehouse(id);
-            var uiModel = new WarehouseUIModel();
+            var uiModel = new WarehouseUIModel(dbModel);
 
             var productsDB = _storage.GetProducts(id);
             foreach (var product in productsDB)
