@@ -8,9 +8,10 @@ namespace ProductManager.Services
     {
         private StorageService _storage;
 
-        public ProductService()
+        private ProductService() {}
+        public ProductService(StorageService storageSevice)
         {
-            _storage = new StorageService();
+            _storage = storageSevice;
         }
 
         public ProductUIModel GetProductUI(Guid id)
@@ -20,6 +21,19 @@ namespace ProductManager.Services
 
             return uiModel;
         }
+        //public IEnumerable<ProductUIModel> GetProductsUI(Guid warehouseId)
+        //{
+        //    LoadData();
+        //    var resultList = new List<ProductUIModel>();
+        //    foreach (var product in _products)
+        //    {
+        //        if (product.WarehouseId == warehouseId)
+        //        {
+        //            resultList.Add(new ProductUIModel(product));
+        //        }
+        //    }
+        //    return resultList;
+        //}
 
         public void SaveProduct(ProductUIModel uiModel)
         {

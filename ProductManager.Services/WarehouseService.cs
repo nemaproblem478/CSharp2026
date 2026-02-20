@@ -8,22 +8,28 @@ namespace ProductManager.Services
     {
         private StorageService _storage;
 
-        public WarehouseService()
+        private WarehouseService() {}
+        public WarehouseService(StorageService storageSevice)
         {
-            _storage = new StorageService();
+            _storage = storageSevice;
         }
 
-        public WarehouseUIModel GetWarehouseUI(Guid id)
+        public WarehouseUIModel GetWarehouseUI(Guid? id)
         {
-            var dbModel = _storage.GetWarehouse(id);
-            var uiModel = new WarehouseUIModel(dbModel);
-
-            var productsDB = _storage.GetProducts(id);
-            foreach (var product in productsDB)
+            if (id == null) return null;
+            else
             {
-                uiModel.Products.Add(product);
+                var dbModel = _storage.GetWarehouse(id);
+                var uiModel = new WarehouseUIModel(dbModel);
+
+                var productsUI = _storage.GetProductsUI(id);
+                foreach (var product in productsUI)
+                {
+                    uiModel.Products.Add(product);
+                }
+                uiModel.CalculateTotalCost();
+                return uiModel;
             }
-            return uiModel;
         }
 
         public void SaveWarehouse(WarehouseUIModel uiModel)
