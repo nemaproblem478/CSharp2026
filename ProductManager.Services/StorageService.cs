@@ -1,4 +1,5 @@
 ﻿using ProductManager.DBModels;
+using ProductManager.UIModels;
 
 namespace ProductManager.Services
 {
@@ -15,7 +16,7 @@ namespace ProductManager.Services
             _products = FakeStorage.Products.ToList();
         }
 
-        public WarehouseDBModel GetWarehouse(Guid id)
+        public WarehouseDBModel GetWarehouse(Guid? id)
         {
             LoadData();
             foreach (var warehouse in _warehouses)
@@ -56,6 +57,19 @@ namespace ProductManager.Services
                 if (product.WarehouseId == warehouseId)
                 {
                     resultList.Add(product);
+                }
+            }
+            return resultList;
+        }
+        public IEnumerable<ProductUIModel> GetProductsUI(Guid? warehouseId)
+        {
+            LoadData();
+            var resultList = new List<ProductUIModel>();
+            foreach (var product in _products)
+            {
+                if (product.WarehouseId == warehouseId)
+                {
+                    resultList.Add(new ProductUIModel(product));
                 }
             }
             return resultList;
