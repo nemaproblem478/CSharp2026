@@ -51,7 +51,7 @@ namespace ProductManager.UIModels
         }
         public override string ToString()
         {
-            return $"Product: {Name}, Warehouse: {WarehouseId}, Category: {Category},\nQuantity: {Quantity}, Price: ${Price}, Total Cost: {TotalCost}\nDescription: {Description}";
+            return $"{Name}\nCategory: {Category},\nQuantity: {Quantity}, Price: ${Price}\nDescription: {Description}";
         }
     }
 }
