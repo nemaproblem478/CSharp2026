@@ -41,7 +41,7 @@ namespace ProductManager.UIModels
         public override string ToString()
         {
             CalculateTotalCost();
-            return $"Warehouse: {Name}, Location: {Location}, Products: {Products.Count}, Total Cost: {TotalCost}";
+            return $"Warehouse: {Name}, Location: {Location}, Products: {Products.Count}, Total Cost: ${TotalCost}";
         }
     }
 }
