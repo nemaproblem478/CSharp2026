@@ -138,7 +138,9 @@ namespace ProductManager.Console
             input = System.Console.ReadLine();
             if (input != "") product.Price = double.Parse(input);
 
-            System.Console.WriteLine("--Enter new Category or press Enter to skip");
+            System.Console.WriteLine("--Enter one of these Categories or press Enter to skip:");
+            foreach (var category in Enum.GetValues(typeof(Category)))
+                System.Console.WriteLine($"-{category}");
             input = System.Console.ReadLine();
             if (input != "") product.Category = GetCategory(input);
 
