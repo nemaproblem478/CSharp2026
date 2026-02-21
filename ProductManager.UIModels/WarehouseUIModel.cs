@@ -16,7 +16,7 @@ namespace ProductManager.UIModels
         public string Name { get => _name; set => _name = value; }
         public Location Location { get => _location; set => _location = value; }
         public List<ProductUIModel> Products { get => _products; set => _products = value; }
-        public double TotalCost { get => _totalCost; set => _totalCost = value; }
+        public double TotalCost { get => _totalCost; }
 
         public WarehouseUIModel()
         {
