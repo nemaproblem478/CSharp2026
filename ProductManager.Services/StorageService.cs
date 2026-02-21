@@ -48,7 +48,8 @@ namespace ProductManager.Services
             }
             return null;
         }
-        public IEnumerable<ProductDBModel> GetProducts(Guid warehouseId)
+        //Get all products db models by warehouse id
+        public IEnumerable<ProductDBModel> GetProducts(Guid? warehouseId)
         {
             LoadData();
             var resultList = new List<ProductDBModel>();
@@ -61,25 +62,14 @@ namespace ProductManager.Services
             }
             return resultList;
         }
-        public IEnumerable<ProductUIModel> GetProductsUI(Guid? warehouseId)
-        {
-            LoadData();
-            var resultList = new List<ProductUIModel>();
-            foreach (var product in _products)
-            {
-                if (product.WarehouseId == warehouseId)
-                {
-                    resultList.Add(new ProductUIModel(product));
-                }
-            }
-            return resultList;
-        }
+        //Add warehouse to the storage
         public bool AddWarehouse(WarehouseDBModel dbModel)
         {
             LoadData();
             _warehouses.Add(dbModel);
             return true;
         }
+        //Add product to the storage
         public bool AddProduct(ProductDBModel dbModel)
         {
             LoadData();

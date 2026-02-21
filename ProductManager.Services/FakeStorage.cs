@@ -25,6 +25,7 @@ namespace ProductManager.Services
 
         static FakeStorage()
         {
+            //Initializing storage
             var warehouseKyiv = new WarehouseDBModel("Kyiv Warehouse", Location.Kyiv);
             var warehouseKhmelnytsky = new WarehouseDBModel("Khmelnytsky Warehouse", Location.Khmelnytsky);
             var warehouseLviv = new WarehouseDBModel("Lviv Warehouse", Location.Lviv);
