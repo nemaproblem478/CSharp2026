@@ -99,22 +99,18 @@ namespace ProductManager.Console
         }
         private static Category GetCategory(string? category)
         {
-            while (true)
+            switch (category)
             {
-                switch (category)
-                {
-                    case "ElectricGuitars":
-                        return Category.ElectricGuitars;
-                    case "GuitarPedals":
-                        return Category.GuitarPedals;
-                    case "Amplifiers":
-                        return Category.Amplifiers;
-                    case "Synthesizer":
-                        return Category.Synthesizer;
-                    default:
-                        System.Console.WriteLine("Category not found. Please try again");
-                        break;
-                }
+                case "ElectricGuitars":
+                    return Category.ElectricGuitars;
+                case "GuitarPedals":
+                    return Category.GuitarPedals;
+                case "Amplifiers":
+                    return Category.Amplifiers;
+                case "Synthesizer":
+                    return Category.Synthesizer;
+                default:
+                    return Category.ElectricGuitars;
             }
         }
         private static void LoadWarehouses()
