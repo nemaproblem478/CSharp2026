@@ -21,6 +21,17 @@ namespace ProductManager.Services
 
             return uiModel;
         }
+        //Get all products ui models by warehouse id
+        public IEnumerable<ProductUIModel> GetProductsUI(Guid? warehouseId)
+        {
+            _storage.LoadData();
+            var resultList = new List<ProductUIModel>();
+            foreach (var product in _storage.GetProducts(warehouseId))
+            {
+                resultList.Add(new ProductUIModel(product));
+            }
+            return resultList;
+        }
 
         public void SaveProduct(ProductUIModel uiModel)
         {

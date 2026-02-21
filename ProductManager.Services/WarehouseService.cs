@@ -22,10 +22,10 @@ namespace ProductManager.Services
                 var dbModel = _storage.GetWarehouse(id);
                 var uiModel = new WarehouseUIModel(dbModel);
 
-                var productsUI = _storage.GetProductsUI(id);
-                foreach (var product in productsUI)
+                var products = _storage.GetProducts(id);
+                foreach (var product in products)
                 {
-                    uiModel.Products.Add(product);
+                    uiModel.Products.Add(new ProductUIModel(product));
                 }
                 uiModel.CalculateTotalCost();
                 return uiModel;

@@ -181,7 +181,7 @@ namespace ProductManager.Console
                 {
                     warehouseExists = true;
                     _currentWarehouseId = i;
-                    _warehouses[i].Products = _storageService.GetProductsUI(_warehouses[i].Id).ToList();
+                    _warehouses[i].Products = _productService.GetProductsUI(_warehouses[i].Id).ToList();
                     _warehouses[i].CalculateTotalCost();
                     System.Console.WriteLine($"--Products in {_warehouses[i].Name}:");
                     for (int j = 0; j < _warehouses[i].Products.Count; j++)
