@@ -1,7 +1,8 @@
-﻿using ProductManager.Services;
+﻿using ProductManager.CommonComponents;
+using ProductManager.Services;
 using ProductManager.UIModels;
-using ProductManager.CommonComponents;
 using System;
+using System.Globalization;
 
 namespace ProductManager.Console
 {
@@ -167,7 +168,7 @@ namespace ProductManager.Console
 
             System.Console.WriteLine("--Enter new Price or press Enter to skip");
             input = System.Console.ReadLine();
-            if (input != "") product.Price = double.Parse(input);
+            if (input != "") product.Price = double.Parse(input, CultureInfo.InvariantCulture);
 
             System.Console.WriteLine("--Enter one of these Categories or press Enter to skip:");
             foreach (var category in Enum.GetValues(typeof(Category)))
