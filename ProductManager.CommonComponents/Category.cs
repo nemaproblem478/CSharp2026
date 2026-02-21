@@ -8,6 +8,5 @@ namespace ProductManager.CommonComponents
         GuitarPedals,
         Amplifiers,
         Synthesizer,
-        Commutation
     }
 }
