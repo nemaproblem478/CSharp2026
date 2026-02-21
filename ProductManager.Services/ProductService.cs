@@ -14,6 +14,7 @@ namespace ProductManager.Services
             _storage = storageSevice;
         }
 
+        //Get all products ui models by product id
         public ProductUIModel GetProductUI(Guid id)
         {
             var dbModel = _storage.GetProduct(id);
