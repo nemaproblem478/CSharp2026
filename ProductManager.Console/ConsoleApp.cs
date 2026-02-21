@@ -5,7 +5,7 @@ using System;
 
 namespace ProductManager.Console
 {
-    internal class Program
+    internal class ConsoleApp
     {
         enum AppState
         {
@@ -25,7 +25,6 @@ namespace ProductManager.Console
         private static int _currentWarehouseId = 0;
         static void Main(string[] args)
         {
-            System.Console.WriteLine("Hello and welcome to the Product Manager Console App!");
             _storageService = new StorageService();
             _warehouseService = new WarehouseService(_storageService);
             _productService = new ProductService(_storageService);
@@ -131,23 +130,23 @@ namespace ProductManager.Console
         }
         private static void EditUI(ref ProductUIModel product)
         {
-            System.Console.WriteLine("Enter new Name or press Enter to skip");
+            System.Console.WriteLine("--Enter new Name or press Enter to skip");
             string? input = System.Console.ReadLine();
             if (input != "") product.Name = input;
 
-            System.Console.WriteLine("Enter new Quantity or press Enter to skip");
+            System.Console.WriteLine("--Enter new Quantity or press Enter to skip");
             input = System.Console.ReadLine();
             if (input != "") product.Quantity = int.Parse(input);
 
-            System.Console.WriteLine("Enter new Price or press Enter to skip");
+            System.Console.WriteLine("--Enter new Price or press Enter to skip");
             input = System.Console.ReadLine();
             if (input != "") product.Price = double.Parse(input);
 
-            System.Console.WriteLine("Enter new Category or press Enter to skip");
+            System.Console.WriteLine("--Enter new Category or press Enter to skip");
             input = System.Console.ReadLine();
             if (input != "") product.Category = GetCategory(input);
 
-            System.Console.WriteLine("Enter new Description or press Enter to skip");
+            System.Console.WriteLine("--Enter new Description or press Enter to skip");
             input = System.Console.ReadLine();
             if (input != "") product.Description = input;
 
@@ -158,6 +157,7 @@ namespace ProductManager.Console
         {
             System.Console.Clear();
             System.Console.WriteLine("\x1b[3J");
+            System.Console.WriteLine("Hello and welcome to the Product Manager Console App!");
             System.Console.WriteLine("--Here is the list of all Warehouses: ");
 
             LoadWarehouses();
@@ -191,7 +191,10 @@ namespace ProductManager.Console
                 }
             }
             if (!warehouseExists)
-                System.Console.WriteLine("Warehouse not found. Please try again.");
+            {
+                System.Console.WriteLine("--Warehouse not found! Please try again.\n");
+                System.Console.WriteLine("--Type Back to get list of all Warehouses.");
+            }
             else
             {
                 System.Console.WriteLine("\n--Type a number of the Product to edit.");
@@ -220,9 +223,9 @@ namespace ProductManager.Console
                 {
                     _productService.SaveProduct(newProduct);
                     _warehouses[_currentWarehouseId].Products[productNumConverted] = newProduct;
-                    System.Console.WriteLine("Product has been saved successfully!");
+                    System.Console.WriteLine("--Product has been saved successfully!");
                 }
-                else System.Console.WriteLine("Product wasn't saved!");
+                else System.Console.WriteLine("--Product wasn't saved!");
             }
             else
             {
