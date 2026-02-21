@@ -33,10 +33,9 @@ namespace ProductManager.UIModels
         {
             _warehouseId = warehouseId;
         }
-        public ProductUIModel(ProductDBModel dbModel)
+        public ProductUIModel(ProductDBModel dbModel) : this(dbModel.WarehouseId)
         {
             _dbModel = dbModel;
-            _warehouseId = dbModel.WarehouseId;
             _productId = dbModel.ProductId;
             _name = dbModel.Name;
             _quantity = dbModel.Quantity;
