@@ -13,7 +13,6 @@ namespace ProductManager.Console
             WarehouseDetails = 1,
             ProductEdit = 2,
             ProductCreate = 3,
-            End = 4,
             Exit = 100,
         }
 
@@ -51,6 +50,26 @@ namespace ProductManager.Console
                 UpdateState(command);
             }
         }
+        //----UpdateState----
+        //When typing "Back" :
+        //if in Edit or Create states -> return to WarehouseDetails state (listing Products of a Warehouse)
+        //if in any other (for now - only WarehouseDetails) -> return to Default state (listing Warehouses)
+        //When typing "Exit" :
+        //exit.
+        //When typing smth else :
+        //-----
+        //If in Default state -> turn to WarehouseDetails, command will be processed as a name for Warehouse.
+        //-----
+        //If in WarehouseDetails state -> check command ->
+        //if command == Create -> turn to ProductCreate state
+        //else -> turn to ProductEdit state, command will be processed as a number for Product.
+        //-----
+        //If in ProductEdit state -> check command ->
+        //if command == Create -> turn to ProductCreate state
+        //if command == Back -> stay in ProductEdit state
+        //else -> turn to Default state.
+        //-----
+        //If in ProductCreate state -> turn to Default state.
         private static void UpdateState(string? command)
         {
             switch (command)
@@ -87,16 +106,27 @@ namespace ProductManager.Console
                             else _appState = AppState.ProductEdit;
                             break;
                         case AppState.ProductEdit:
-                            if (command == "Create") _appState = AppState.ProductCreate;
-                            else _appState = AppState.ProductEdit;
+                            switch (command) 
+                            {
+                                case "Create":
+                                    _appState = AppState.ProductCreate;
+                                    break;
+                                case "Back":
+                                    _appState = AppState.ProductEdit;
+                                    break;
+                                default:
+                                    _appState = AppState.Default;
+                                    break;
+                            }
                             break;
-                        case AppState.End:
-                            System.Console.WriteLine("Unknown command. Please try again.");
+                        case AppState.ProductCreate:
+                            _appState = AppState.Default;
                             break;
                     }
                     break;
             }
         }
+        //Function used to convert user string to a category
         private static Category GetCategory(string? category)
         {
             switch (category)
@@ -124,6 +154,7 @@ namespace ProductManager.Console
                 _warehouses.Add(warehouseUIModel);
             }
         }
+        //Function used in Edit and Create states to get user input for fields
         private static void EditUI(ref ProductUIModel product)
         {
             System.Console.WriteLine("--Enter new Name or press Enter to skip");
@@ -208,8 +239,10 @@ namespace ProductManager.Console
             int productNumConverted = int.Parse(productNum) - 1;
             if (productNumConverted >= 0 && productNumConverted < _warehouses[_currentWarehouseId].Products.Count)
             {
+                //Get the product to edit
                 var newProduct = _warehouses[_currentWarehouseId].Products[productNumConverted];
 
+                //Preview before changing
                 System.Console.WriteLine(newProduct);
                 System.Console.WriteLine();
 
@@ -230,12 +263,14 @@ namespace ProductManager.Console
                 System.Console.WriteLine("--Out of range! To create a Product type Create");
             }
             System.Console.WriteLine("\n--Type Back to get list of all Products in this Warehouse.");
+            System.Console.WriteLine("--Press Enter to get list of all Warehouses.");
         }
         private static void ProductCreateState()
         {
             System.Console.Clear();
             System.Console.WriteLine("\x1b[3J");
 
+            //Create ui model that matches the current warehouse id
             var newProduct = new ProductUIModel(_warehouses[_currentWarehouseId].Id);
 
             EditUI(ref newProduct);
@@ -246,11 +281,12 @@ namespace ProductManager.Console
             {
                 _productService.SaveProduct(newProduct);
                 _warehouses[_currentWarehouseId].Products.Add(newProduct);
-                System.Console.WriteLine("Product has been saved successfully!");
+                System.Console.WriteLine("--Product has been saved successfully!");
             }
-            else System.Console.WriteLine("Product wasn't saved");
+            else System.Console.WriteLine("--Product wasn't saved");
 
             System.Console.WriteLine("\n--Type Back to get list of all Products in this Warehouse.");
+            System.Console.WriteLine("--Press Enter to get list of all Warehouses.");
         }
 
     }
