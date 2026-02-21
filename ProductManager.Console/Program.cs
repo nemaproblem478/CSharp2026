@@ -47,12 +47,11 @@ namespace ProductManager.Console
                         DefaultState();
                         break;
                 }
-                System.Console.WriteLine("Type Exit to close application.");
+                System.Console.WriteLine("--Type Exit to close application.\n");
                 command = System.Console.ReadLine();
                 UpdateState(command);
             }
         }
-
         private static void UpdateState(string? command)
         {
             switch (command)
@@ -73,6 +72,9 @@ namespace ProductManager.Console
                     break;
                 case "Exit":
                     _appState = AppState.Exit;
+
+                    System.Console.Clear();
+                    System.Console.WriteLine("\x1b[3J");
                     System.Console.WriteLine("Thank you and see you later!");
                     break;
                 default:
@@ -110,26 +112,12 @@ namespace ProductManager.Console
                         return Category.Amplifiers;
                     case "Synthesizer":
                         return Category.Synthesizer;
-                    case "Commutation":
-                        return Category.Commutation;
                     default:
                         System.Console.WriteLine("Category not found. Please try again");
                         break;
                 }
             }
         }
-
-        private static void DefaultState()
-        {
-            System.Console.WriteLine("Here is the list of all Warehouses: ");
-            LoadWarehouses();
-            foreach (var warehouse in _warehouses)
-            {
-                System.Console.WriteLine(warehouse);
-            }
-            System.Console.WriteLine("Type the name of the Warehouse to see it's Products.");
-        }
-
         private static void LoadWarehouses()
         {
             if (_warehouses != null)
@@ -141,9 +129,50 @@ namespace ProductManager.Console
                 _warehouses.Add(warehouseUIModel);
             }
         }
+        private static void EditUI(ref ProductUIModel product)
+        {
+            System.Console.WriteLine("Enter new Name or press Enter to skip");
+            string? input = System.Console.ReadLine();
+            if (input != "") product.Name = input;
 
+            System.Console.WriteLine("Enter new Quantity or press Enter to skip");
+            input = System.Console.ReadLine();
+            if (input != "") product.Quantity = int.Parse(input);
+
+            System.Console.WriteLine("Enter new Price or press Enter to skip");
+            input = System.Console.ReadLine();
+            if (input != "") product.Price = double.Parse(input);
+
+            System.Console.WriteLine("Enter new Category or press Enter to skip");
+            input = System.Console.ReadLine();
+            if (input != "") product.Category = GetCategory(input);
+
+            System.Console.WriteLine("Enter new Description or press Enter to skip");
+            input = System.Console.ReadLine();
+            if (input != "") product.Description = input;
+
+            System.Console.WriteLine("--Preview of the Product:");
+            System.Console.WriteLine(product);
+        }
+        private static void DefaultState()
+        {
+            System.Console.Clear();
+            System.Console.WriteLine("\x1b[3J");
+            System.Console.WriteLine("--Here is the list of all Warehouses: ");
+
+            LoadWarehouses();
+            foreach (var warehouse in _warehouses)
+            {
+                System.Console.WriteLine(warehouse);
+            }
+
+            System.Console.WriteLine();
+            System.Console.WriteLine("--Type the name of the Warehouse to see it's Products.");
+        }
         private static void WarehouseDetailsState(string? warehouseName)
         {
+            System.Console.Clear();
+            System.Console.WriteLine("\x1b[3J");
             if (warehouseName == "Back") warehouseName = _warehouses[_currentWarehouseId].Name;
             bool warehouseExists = false;
             for (int i = 0; i < _warehouses.Count; i++)
@@ -154,10 +183,10 @@ namespace ProductManager.Console
                     _currentWarehouseId = i;
                     _warehouses[i].Products = _storageService.GetProductsUI(_warehouses[i].Id).ToList();
                     _warehouses[i].CalculateTotalCost();
-                    System.Console.WriteLine($"Products in {_warehouses[i].Name}:");
+                    System.Console.WriteLine($"--Products in {_warehouses[i].Name}:");
                     for (int j = 0; j < _warehouses[i].Products.Count; j++)
                     {
-                        System.Console.WriteLine($"{j+1}. {_warehouses[i].Products[j]}");
+                        System.Console.WriteLine($"--{j+1}. {_warehouses[i].Products[j]}");
                     }
                 }
             }
@@ -165,48 +194,27 @@ namespace ProductManager.Console
                 System.Console.WriteLine("Warehouse not found. Please try again.");
             else
             {
-                System.Console.WriteLine("Type a number of the Product to edit.");
-                System.Console.WriteLine("Type Create to create a Product for current Warehouse.");
-                System.Console.WriteLine("Type Back to get list of all Warehouses.");
-                //string? input = System.Console.ReadLine();
-                //UpdateState(input);
-                //_appState = AppState.End;
+                System.Console.WriteLine("\n--Type a number of the Product to edit.");
+                System.Console.WriteLine("--Type Create to create a Product for current Warehouse.");
+                System.Console.WriteLine("--Type Back to get list of all Warehouses.");
             }
-        }
-        private static void EditUI(ref ProductUIModel product)
-        {
-            System.Console.WriteLine("Enter new Name or press Enter to keep");
-            string? input = System.Console.ReadLine();
-            if (input != "") product.Name = input;
-
-            System.Console.WriteLine("Enter new Quantity or press Enter to keep");
-            input = System.Console.ReadLine();
-            if (input != "") product.Quantity = int.Parse(input);
-
-            System.Console.WriteLine("Enter new Price or press Enter to keep");
-            input = System.Console.ReadLine();
-            if (input != "") product.Price = double.Parse(input);
-
-            System.Console.WriteLine("Enter new Category or press Enter to keep");
-            input = System.Console.ReadLine();
-            if (input != "") product.Category = GetCategory(input);
-
-            System.Console.WriteLine("Enter new Description or press Enter to keep");
-            input = System.Console.ReadLine();
-            if (input != "") product.Description = input;
-
-            System.Console.WriteLine("Preview of the Product:");
-            System.Console.WriteLine(product);
         }
         private static void ProductEditState(string? productNum)
         {
+            System.Console.Clear();
+            System.Console.WriteLine("\x1b[3J");
+
             int productNumConverted = int.Parse(productNum) - 1;
             if (productNumConverted >= 0 && productNumConverted < _warehouses[_currentWarehouseId].Products.Count)
             {
                 var newProduct = _warehouses[_currentWarehouseId].Products[productNumConverted];
+
+                System.Console.WriteLine(newProduct);
+                System.Console.WriteLine();
+
                 EditUI(ref newProduct);
                 
-                System.Console.WriteLine("Type Save to save it in the Warehouse");
+                System.Console.WriteLine("\n--Type Save to save it in the Warehouse");
                 string? input = System.Console.ReadLine();
                 if (input == "Save")
                 {
@@ -214,20 +222,24 @@ namespace ProductManager.Console
                     _warehouses[_currentWarehouseId].Products[productNumConverted] = newProduct;
                     System.Console.WriteLine("Product has been saved successfully!");
                 }
-                else System.Console.WriteLine("Product wasn't saved");
+                else System.Console.WriteLine("Product wasn't saved!");
             }
             else
             {
-                System.Console.WriteLine("Out of range. To create a Product type Create");
+                System.Console.WriteLine("--Out of range! To create a Product type Create");
             }
-            System.Console.WriteLine("Type Back to get list of all Products in this Warehouse.");
+            System.Console.WriteLine("\n--Type Back to get list of all Products in this Warehouse.");
         }
         private static void ProductCreateState()
         {
+            System.Console.Clear();
+            System.Console.WriteLine("\x1b[3J");
+
             var newProduct = new ProductUIModel(_warehouses[_currentWarehouseId].Id);
+
             EditUI(ref newProduct);
 
-            System.Console.WriteLine("Type Save to save it in the Warehouse");
+            System.Console.WriteLine("\n--Type Save to save it in the Warehouse");
             string? input = System.Console.ReadLine();
             if (input == "Save")
             {
@@ -237,7 +249,7 @@ namespace ProductManager.Console
             }
             else System.Console.WriteLine("Product wasn't saved");
 
-            System.Console.WriteLine("Type Back to get list of all Products in this Warehouse.");
+            System.Console.WriteLine("\n--Type Back to get list of all Products in this Warehouse.");
         }
 
     }
