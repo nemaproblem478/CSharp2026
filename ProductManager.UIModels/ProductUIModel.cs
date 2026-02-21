@@ -43,15 +43,16 @@ namespace ProductManager.UIModels
             _price = dbModel.Price;
             _category = dbModel.Category;
             _description = dbModel.Description;
-            calculateTotalCost();
+            CalculateTotalCost();
         }
-        public void calculateTotalCost()
+        public void CalculateTotalCost()
         {
             _totalCost = Price * Quantity;
         }
         public override string ToString()
         {
-            return $"{Name}\nCategory: {Category},\nQuantity: {Quantity}, Price: ${Price}\nDescription: {Description}";
+            CalculateTotalCost();
+            return $"{Name}\nCategory: {Category},\nQuantity: {Quantity}, Price: ${Price}, Total cost: ${TotalCost}\nDescription: {Description}";
         }
     }
 }
