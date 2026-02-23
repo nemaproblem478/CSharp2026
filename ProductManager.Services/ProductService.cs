@@ -4,7 +4,7 @@ using ProductManager.UIModels;
 
 namespace ProductManager.Services
 {
-    public class ProductService
+    public class ProductService : IProductService
     {
         private IStorageService _storage;
 
