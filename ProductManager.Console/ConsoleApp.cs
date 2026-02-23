@@ -18,10 +18,10 @@ namespace ProductManager.Console
         }
 
         private static AppState _appState = AppState.Default;
-        private static StorageService _storageService;
+        private static IStorageService _storageService;
         private static List<WarehouseUIModel> _warehouses;
-        private static WarehouseService _warehouseService;
-        private static ProductService _productService;
+        private static IWarehouseService _warehouseService;
+        private static IProductService _productService;
         private static int _currentWarehouseId = 0;
         static void Main(string[] args)
         {
