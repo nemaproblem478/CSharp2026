@@ -6,10 +6,10 @@ namespace ProductManager.Services
 {
     public class ProductService
     {
-        private StorageService _storage;
+        private IStorageService _storage;
 
         private ProductService() {}
-        public ProductService(StorageService storageSevice)
+        public ProductService(IStorageService storageSevice)
         {
             _storage = storageSevice;
         }

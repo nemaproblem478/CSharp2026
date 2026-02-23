@@ -3,7 +3,7 @@ using ProductManager.UIModels;
 
 namespace ProductManager.Services
 {
-    public class StorageService
+    public class StorageService : IStorageService
     {
         private List<WarehouseDBModel> _warehouses;
         private List<ProductDBModel> _products;

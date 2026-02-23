@@ -4,12 +4,12 @@ using ProductManager.UIModels;
 
 namespace ProductManager.Services
 {
-    public class WarehouseService
+    public class WarehouseService : IWarehouseService
     {
-        private StorageService _storage;
+        private IStorageService _storage;
 
         private WarehouseService() {}
-        public WarehouseService(StorageService storageSevice)
+        public WarehouseService(IStorageService storageSevice)
         {
             _storage = storageSevice;
         }
