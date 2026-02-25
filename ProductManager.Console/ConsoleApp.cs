@@ -133,15 +133,15 @@ namespace ProductManager.Console
             switch (category)
             {
                 case "ElectricGuitars":
-                    return Category.ElectricGuitars;
+                    return Category.ElectricGuitar;
                 case "GuitarPedals":
-                    return Category.GuitarPedals;
+                    return Category.GuitarPedal;
                 case "Amplifiers":
-                    return Category.Amplifiers;
+                    return Category.Amplifier;
                 case "Synthesizer":
                     return Category.Synthesizer;
                 default:
-                    return Category.ElectricGuitars;
+                    return Category.ElectricGuitar;
             }
         }
         private static void LoadWarehouses()
