@@ -6,72 +6,75 @@
              >
     <ScrollView>
         <VerticalStackLayout Padding="10">
-            <Label Text="Name"
-                    FontSize="20"
-                    HorizontalOptions="Start"
+            <Label 
+                Text="Name"
+                FontSize="20"
+                HorizontalOptions="Start"
             ></Label>
-            <Entry Placeholder= "Name"
-                    VerticalOptions="Start"
-                    FontSize="20"
-                    x:Name="eName"
+            <Entry 
+                Placeholder= "Name"
+                VerticalOptions="Start"
+                FontSize="20"
+                x:Name="eName"
             ></Entry>
-            <Label Text="Description"
-                    FontSize="20"
-                    HorizontalOptions="Start"
+            <Label 
+                Text="Description"
+                FontSize="20"
+                HorizontalOptions="Start"
             ></Label>
-            <Entry Placeholder= "Description"
-                    VerticalOptions="Start"
-                    FontSize="20"
-                    x:Name="eDescription"
+            <Entry 
+                Placeholder= "Description"
+                VerticalOptions="Start"
+                FontSize="20"
+                x:Name="eDescription"
             ></Entry>
         
-            <Label Text="Category"
-                    FontSize="20"
-                    HorizontalOptions="Start"
+            <Label 
+                Text="Category"
+                FontSize="20"
+                HorizontalOptions="Start"
             ></Label>
-            <Picker Title="Pick a Category"
-                    FontSize="20"
-                    VerticalOptions="Start"
-                    x:Name="pCategory"
-                    ItemDisplayBinding="{Binding DisplayName}"
-            ></Picker>
-            <Label Text="Quantity"
-                    FontSize="20"
-                    HorizontalOptions="Start"
+            <Picker 
+                Title="Pick a Category"
+                FontSize="20"
+                VerticalOptions="Start"
+                x:Name="pCategory"
+                ItemDisplayBinding="{Binding DisplayName}"
+            />
+            <Label 
+                Text="Quantity"
+                FontSize="20"
+                HorizontalOptions="Start"
             ></Label>
-            <Entry Placeholder= "Quantity"
-                    VerticalOptions="Start"
-                    FontSize="20"
-                    Keyboard="Numeric"
-                    x:Name="eQuantity"
-                    TextChanged="OnQuantityEntryTextChanged"
+            <Entry 
+                Placeholder= "Quantity"
+                VerticalOptions="Start"
+                FontSize="20"
+                Keyboard="Numeric"
+                x:Name="eQuantity"
+                TextChanged="OnQuantityEntryTextChanged"
             ></Entry>
-            <Label Text="Price"
-                    FontSize="20"
-                    HorizontalOptions="Start"
+            <Label 
+                Text="Price"
+                FontSize="20"
+                HorizontalOptions="Start"
             ></Label>
-            <Entry Placeholder= "$"
-                    VerticalOptions="Start"
-                    FontSize="20"
-                    Keyboard="Numeric"
-                    x:Name="ePrice"
-                    TextChanged="OnPriceEntryTextChanged"
-            ></Entry>
-            <Grid 
-                ColumnDefinitions="*,*"
-                ColumnSpacing="10"
-                Padding="10">
-                <Button
-                    Grid.Column="0"
-                    Text="Back"
-                    Clicked="BackClicked">
-                </Button>
-                <Button
-                    Grid.Column="1"
-                    Text="Save"
-                    Clicked="SaveClicked">
-                </Button>
-            </Grid>
+            <Entry 
+                Placeholder= "$"
+                VerticalOptions="Start"
+                FontSize="20"
+                Keyboard="Numeric"
+                x:Name="ePrice"
+                TextChanged="OnPriceEntryTextChanged"
+            />
+            <Button
+                Text="Save"
+                TextColor="White"
+                FontSize="Title"
+                Clicked="SaveClicked"
+                BackgroundColor="BlueViolet"
+                Margin="0,10"
+            />
         </VerticalStackLayout>
     </ScrollView>
 

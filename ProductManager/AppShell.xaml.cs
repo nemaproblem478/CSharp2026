@@ -7,7 +7,9 @@ namespace ProductManager
         public AppShell()
         {
             InitializeComponent();
-            Routing.RegisterRoute(nameof(ProductCreatePage), typeof(ProductCreatePage));
+            Routing.RegisterRoute($"{nameof(WarehousesPage)}/{nameof(WarehouseDetailsPage)}", typeof(WarehouseDetailsPage));
+            Routing.RegisterRoute($"{nameof(WarehousesPage)}/{nameof(WarehouseDetailsPage)}/{nameof(ProductDetailsPage)}", typeof(ProductDetailsPage));
+            Routing.RegisterRoute($"{nameof(WarehousesPage)}/{nameof(WarehouseDetailsPage)}/{nameof(ProductDetailsPage)}/{nameof(ProductCreatePage)}", typeof(ProductCreatePage));
         }
     }
 }

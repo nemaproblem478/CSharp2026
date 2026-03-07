@@ -5,11 +5,11 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:local="clr-namespace:ProductManager"
     xmlns:pages="clr-namespace:ProductManager.Pages"
-    Title="ProductManager">
+    Title="Product Manager">
 
     <ShellContent
-        Title="Home"
-        ContentTemplate="{DataTemplate pages:ProductCreatePage}"
-        Route="ProductCreatePage" />
+        Title="Warehouses"
+        ContentTemplate="{DataTemplate pages:WarehousesPage}"
+        Route="WarehousesPage" />
 
 </Shell>

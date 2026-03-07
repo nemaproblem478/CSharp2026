@@ -21,7 +21,7 @@ namespace ProductManager
             builder.Services.AddTransient<IWarehouseService, WarehouseService>();
             builder.Services.AddTransient<IProductService, ProductService>();
 
-            builder.Services.AddTransient<MainPage>();
+            builder.Services.AddTransient<WarehousesPage>();
             builder.Services.AddTransient<ProductCreatePage>();
 #if DEBUG
     		builder.Logging.AddDebug();

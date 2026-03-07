@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:models="clr-namespace:ProductManager.UIModels;assembly=ProductManager.UIModels"
+             x:Class="ProductManager.Pages.ProductDetailsPage"
+             x:DataType="models:ProductUIModel"
+             Title="Product Details">
+    <ScrollView>
+        <VerticalStackLayout
+            Padding="10,20"
+            Spacing="5">
+            <Label
+                Text="Name"
+                FontSize="20"
+            />
+            <Entry
+                x:Name="eName"
+                Text="{Binding Name}"
+                FontSize="20"
+            />
+
+            <Label
+                Text="Description"
+                FontSize="20"/>
+            <Entry
+                x:Name="eDescription"
+                Text="{Binding Description}"
+                Placeholder="New Description"
+                FontSize="20"
+            />
+
+            <Label
+                Text="Category"
+                FontSize="20"/>
+            <Picker 
+                Title="{Binding Category, Converter={StaticResource EnumToDisplayName}}"
+                FontSize="20"
+                VerticalOptions="Start"
+                x:Name="pCategory"
+                ItemDisplayBinding="{Binding DisplayName}"
+                SelectedItem="{Binding Category}"
+            />
+
+            <Label
+                Text="Quantity"
+                FontSize="20"/>
+            <Entry
+                x:Name="eQuantity"
+                Text="{Binding Quantity}"
+                Placeholder="New Quantity"
+                FontSize="20"
+                Keyboard="Numeric"
+                TextChanged="OnQuantityEntryTextChanged"
+            />
+            
+            <Label
+                Text="Price"
+                FontSize="20"/>
+            <Entry
+                x:Name="ePrice"
+                Text="{Binding Price}"
+                Placeholder="New Price"
+                FontSize="20"
+                Keyboard="Numeric"
+                TextChanged="OnPriceEntryTextChanged"
+            />
+            
+            <Label
+                Text="Total Cost"
+                FontSize="20"/>
+            <Entry
+                Text="{Binding TotalCost}"
+                FontSize="20"
+                IsReadOnly="True"
+            />
+
+            <Button
+                Text="Save Changes"
+                TextColor="White"
+                FontSize="Title"
+                Clicked="SaveClicked"
+                BackgroundColor="BlueViolet"
+                Margin="0,10"
+                />
+
+
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>
