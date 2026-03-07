@@ -1,26 +1,37 @@
 ﻿using ProductManager.CommonComponents;
 using ProductManager.DBModels;
+using System.Collections.ObjectModel;
+using System.ComponentModel;
+using System.Runtime.CompilerServices;
 
 namespace ProductManager.UIModels
 {
     public class WarehouseUIModel
     {
+
         private WarehouseDBModel _dbModel;
         private Guid _id;
         private string _name;
         private Location _location;
-        private List<ProductUIModel> _products;
+        private ObservableCollection<ProductUIModel> _products;
         private double _totalCost;
 
         public Guid Id { get => _id; }
         public string Name { get => _name; set => _name = value; }
         public Location Location { get => _location; set => _location = value; }
-        public List<ProductUIModel> Products { get => _products; set => _products = value; }
-        public double TotalCost { get => _totalCost; }
+        public ObservableCollection<ProductUIModel> Products { get => _products; set => _products = value; }
+        public double TotalCost
+        {
+            get
+            {
+                CalculateTotalCost();
+                return _totalCost;
+            }
+        }
 
         public WarehouseUIModel()
         {
-            _products = new List<ProductUIModel>();
+            _products = new ObservableCollection<ProductUIModel>();
         }
         public WarehouseUIModel(WarehouseDBModel dbModel) : this()
         {
@@ -28,6 +39,13 @@ namespace ProductManager.UIModels
             _id = dbModel.Id;
             _name = dbModel.Name;
             _location = dbModel.Location;
+        }
+        public WarehouseUIModel(WarehouseUIModel uiModel) : this()
+        {
+            _dbModel = uiModel._dbModel;
+            _id = uiModel.Id;
+            _name = uiModel.Name;
+            _location = uiModel.Location;
         }
         public void CalculateTotalCost()
         {
@@ -40,8 +58,9 @@ namespace ProductManager.UIModels
         }
         public override string ToString()
         {
-            CalculateTotalCost();
+            //CalculateTotalCost();
             return $"Warehouse: {Name}, Location: {Location}, Products: {Products.Count}, Total Cost: ${TotalCost}";
         }
+
     }
 }

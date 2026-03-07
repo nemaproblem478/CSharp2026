@@ -23,11 +23,27 @@ namespace ProductManager.UIModels
         public Guid ProductId { get => _productId; }
         public Guid WarehouseId { get => _warehouseId; }
         public string Name { get => _name; set => _name = value; }
-        public int Quantity { get => _quantity; set => _quantity = value; }
-        public double Price { get => _price; set => _price = value; }
+        public int Quantity
+        {
+            get => _quantity;
+            set
+            {
+                _quantity = value;
+                CalculateTotalCost();
+            }
+        }
+        public double Price 
+        { 
+            get => _price;
+            set
+            {
+                _price = value;
+                CalculateTotalCost();
+            }
+        }
         public Category Category { get => _category; set => _category = value; }
         public string Description { get => _description; set => _description = value; }
-        public double TotalCost { get => _totalCost; }
+        public double TotalCost { get => _totalCost; set { } }
 
         public ProductUIModel(Guid warehouseId)
         {
@@ -42,6 +58,17 @@ namespace ProductManager.UIModels
             _price = dbModel.Price;
             _category = dbModel.Category;
             _description = dbModel.Description;
+            CalculateTotalCost();
+        }
+        public ProductUIModel(ProductUIModel uiModel) : this(uiModel.WarehouseId)
+        {
+            _dbModel = uiModel._dbModel;
+            _productId = uiModel.ProductId;
+            _name = uiModel.Name;
+            _quantity = uiModel.Quantity;
+            _price = uiModel.Price;
+            _category = uiModel.Category;
+            _description = uiModel.Description;
             CalculateTotalCost();
         }
         public void CalculateTotalCost()
