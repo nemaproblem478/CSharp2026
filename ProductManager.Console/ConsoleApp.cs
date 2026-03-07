@@ -2,6 +2,7 @@
 using ProductManager.Services;
 using ProductManager.UIModels;
 using System;
+using System.Collections.ObjectModel;
 using System.Globalization;
 
 namespace ProductManager.Console
@@ -211,7 +212,7 @@ namespace ProductManager.Console
                 {
                     warehouseExists = true;
                     _currentWarehouseId = i;
-                    _warehouses[i].Products = _productService.GetProductsUI(_warehouses[i].Id).ToList();
+                    _warehouses[i].Products = new ObservableCollection<ProductUIModel>(_productService.GetProductsUI(_warehouses[i].Id).ToList());
                     _warehouses[i].CalculateTotalCost();
                     System.Console.WriteLine($"--Products in {_warehouses[i].Name}:");
                     for (int j = 0; j < _warehouses[i].Products.Count; j++)
