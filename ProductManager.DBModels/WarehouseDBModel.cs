@@ -16,9 +16,12 @@ namespace ProductManager.DBModels
         {
 
         }
-        public WarehouseDBModel(string name, Location location)
+        public WarehouseDBModel(string name, Location location) : this(Guid.NewGuid(), name, location)
         {
-            _id = Guid.NewGuid();
+        }
+        public WarehouseDBModel(Guid id, string name, Location location)
+        {
+            _id = id;
             _name = name;
             _location = location;
         }

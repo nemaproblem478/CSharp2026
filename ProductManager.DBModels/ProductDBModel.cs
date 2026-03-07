@@ -24,9 +24,12 @@ namespace ProductManager.DBModels
         {
 
         }
-        public ProductDBModel(Guid warehouseId, string name, int quantity, double price, Category category, string description)
+        public ProductDBModel(Guid warehouseId, string name, int quantity, double price, Category category, string description) : this(Guid.NewGuid(), warehouseId, name, quantity, price, category, description)
         {
-            _productId = Guid.NewGuid();
+        }
+        public ProductDBModel(Guid productId, Guid warehouseId, string name, int quantity, double price, Category category, string description)
+        {
+            _productId = productId;
             _warehouseId = warehouseId;
             _name = name;
             _quantity = quantity;
