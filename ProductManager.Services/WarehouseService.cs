@@ -13,7 +13,7 @@ namespace ProductManager.Services
         {
             _storage = storageSevice;
         }
-
+        //Get warehouse ui model by warehouse id
         public WarehouseUIModel GetWarehouseUI(Guid? id)
         {
             if (id == null) return null;
@@ -31,7 +31,7 @@ namespace ProductManager.Services
                 return uiModel;
             }
         }
-        //Get all warehouse ui models by warehouse id
+        //Get all warehouse ui models
         public IEnumerable<WarehouseUIModel> GetAllWarehousesUI()
         {
             _storage.LoadData();
@@ -48,6 +48,7 @@ namespace ProductManager.Services
             }
             return resultList;
         }
+        //Load Products to WarehouseUIModel
         public void LoadProducts(WarehouseUIModel uiModel)
         {
             uiModel.Products.Clear();

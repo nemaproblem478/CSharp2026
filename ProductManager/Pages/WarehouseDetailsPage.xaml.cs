@@ -25,20 +25,22 @@ public partial class WarehouseDetailsPage : ContentPage
 
 		
     }
-	public void ProductSelected(object sender, SelectionChangedEventArgs e)
+    //Handling selection of a product and navigating into the ProductDetailsPage
+    public void ProductSelected(object sender, SelectionChangedEventArgs e)
 	{
 		var product = (ProductUIModel)e.CurrentSelection[0];
 		Shell.Current.GoToAsync($"{nameof(ProductDetailsPage)}", new Dictionary<string, object> { { "SelectedProduct", product } });
 	}
+	//Handling navigating to ProductCreatePage when clicking on "Create" button
 	private void CreateClicked(object sender, EventArgs e)
 	{
         Shell.Current.GoToAsync($"{nameof(ProductCreatePage)}", new Dictionary<string, object> { { "CurrentWarehouse", _currentWarehouse.Id } });
     }
+    //Handling updating information of all products on appearing
     protected override void OnAppearing()
     {
         base.OnAppearing();
 
-        // Переконуємось, що склад обрано, щоб уникнути помилок
         if (_currentWarehouse != null)
         {
             var data = _service.GetProductsUI(_currentWarehouse.Id).ToList();

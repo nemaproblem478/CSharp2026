@@ -60,6 +60,7 @@ namespace ProductManager.UIModels
             _description = dbModel.Description;
             CalculateTotalCost();
         }
+        //ProductUIModel copy constructor
         public ProductUIModel(ProductUIModel uiModel) : this(uiModel.WarehouseId)
         {
             _dbModel = uiModel._dbModel;

@@ -21,9 +21,10 @@ public partial class ProductCreatePage : ContentPage
 	{
 		InitializeComponent();
         _service = service;
-		pCategory.ItemsSource = EnumExtension.GetValuesWithNames<Category>();
+		pCategory.ItemsSource = EnumExtension.GetValuesWithNames<Category>(); //Initializing Category picker
 		
 	}
+    //Handling saving product ui to storage whenever clicking "Save" button. Making sure no entries/picker are empty
 	private void SaveClicked(object sender, EventArgs e)
 	{
 		if (String.IsNullOrWhiteSpace(eName.Text))
@@ -51,16 +52,19 @@ public partial class ProductCreatePage : ContentPage
             DisplayAlert("Invalid data!", "Price of the product can't be empty", "Ok");
             return;
         }
+        //Creating new ProductUIModel based on entries
         var newProduct = new ProductUIModel(_currentWarehouseId);
         newProduct.Name = eName.Text;
         newProduct.Quantity = int.Parse(eQuantity.Text);
         newProduct.Price = double.Parse(ePrice.Text);
         newProduct.Category = ((EnumWithName<Category>)pCategory.SelectedItem).Value;
         newProduct.Description = eDescription.Text;
+        //Saving UI Model
         _service.SaveProduct(newProduct);
+        
         DisplayAlert("Product Created!", $"{newProduct.Category.GetDisplayName()} {newProduct.Name} has been succesfully created!", "Great!");
     }
-
+    //Handling Quntity entry whenever it's content changes. Making sure only numbers are entered
     private void OnQuantityEntryTextChanged(object sender, TextChangedEventArgs e)
     {
         if (string.IsNullOrEmpty(e.NewTextValue))
@@ -71,6 +75,7 @@ public partial class ProductCreatePage : ContentPage
             ((Entry)sender).Text = e.OldTextValue;
         }
     }
+    //Handling Price entry whenever it's content changes. Making sure only numbers and up to one "," are entered
     private void OnPriceEntryTextChanged(object sender, TextChangedEventArgs e)
     {
         if (string.IsNullOrEmpty(e.NewTextValue))

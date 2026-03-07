@@ -15,7 +15,7 @@ namespace ProductManager.Services
             _warehouses = FakeStorage.Warehouses.ToList();
             _products = FakeStorage.Products.ToList();
         }
-
+        //Get WarehouseDBModel by id
         public WarehouseDBModel GetWarehouse(Guid? id)
         {
             LoadData();
@@ -26,6 +26,7 @@ namespace ProductManager.Services
             }
             return null;
         }
+        //Get all WarehouseDBModels
         public IEnumerable<WarehouseDBModel> GetWarehouses()
         {
             LoadData();
@@ -36,6 +37,7 @@ namespace ProductManager.Services
             }
             return resultList;
         }
+        //Get ProductDBModel by product id
         public ProductDBModel GetProduct(Guid id)
         {
             LoadData();

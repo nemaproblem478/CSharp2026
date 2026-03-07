@@ -24,12 +24,12 @@ namespace ProductManager.UIModels
         {
             get
             {
-                CalculateTotalCost();
+                CalculateTotalCost(); //calculate TotalCost before returning it
                 return _totalCost;
             }
         }
 
-        public WarehouseUIModel()
+        private WarehouseUIModel()
         {
             _products = new ObservableCollection<ProductUIModel>();
         }
@@ -40,6 +40,7 @@ namespace ProductManager.UIModels
             _name = dbModel.Name;
             _location = dbModel.Location;
         }
+        //WarehouseUI copy constructor
         public WarehouseUIModel(WarehouseUIModel uiModel) : this()
         {
             _dbModel = uiModel._dbModel;

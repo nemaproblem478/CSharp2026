@@ -7,10 +7,12 @@ using System.Threading.Tasks;
 
 namespace ProductManager.CommonComponents
 {
+    //Record for getting Enum value and display name
     public sealed record EnumWithName<TEnum>(TEnum Value, string DisplayName) where TEnum : struct, Enum;
     
     public static class EnumExtension
     {
+        //Get display name by Enum value
         public static string GetDisplayName(this Enum value)
         {
             var type = value.GetType();
@@ -24,10 +26,12 @@ namespace ProductManager.CommonComponents
 
             return display?.Name ?? name;
         }
+        //Get EnumWithName by Enum value
         public static EnumWithName<TEnum> GetEnumWithName<TEnum>(this TEnum value) where TEnum : struct, Enum
         {
             return new EnumWithName<TEnum>(value, value.GetDisplayName());
         }
+        //Get EnumWithName by Enum type
         public static EnumWithName<TEnum>[] GetValuesWithNames<TEnum>() where TEnum : struct, Enum
         {
             var values = Enum.GetValues<TEnum>();

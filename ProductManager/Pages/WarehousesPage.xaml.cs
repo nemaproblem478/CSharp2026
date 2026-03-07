@@ -15,11 +15,11 @@ public partial class WarehousesPage : ContentPage
 
 		var data = _service.GetAllWarehousesUI().ToList();
 
-		Warehouses = new ObservableCollection<WarehouseUIModel>(data);
+		Warehouses = new ObservableCollection<WarehouseUIModel>(data); //Initializing warehouses data
 
 		BindingContext = this;
 	}
-
+	//Handling selection of a warehouse and navigating into the WarehouseDetailsPage
 	private void WarehouseSelected(object sender, SelectionChangedEventArgs e)
 	{
 		if (e.CurrentSelection.Count > 0)
@@ -29,6 +29,7 @@ public partial class WarehousesPage : ContentPage
             Shell.Current.GoToAsync($"{nameof(WarehouseDetailsPage)}", new Dictionary<string, object> { { "SelectedWarehouse", warehouse } });
         }
 	}
+	//Handling updating information for each warehouse on appearing
 	protected override void OnAppearing()
 	{
         base.OnAppearing();

@@ -33,7 +33,7 @@ namespace ProductManager.Services
             }
             return resultList;
         }
-
+        //Save ProductUIModel to storage
         public void SaveProduct(ProductUIModel uiModel)
         {
             ProductDBModel dbModel;

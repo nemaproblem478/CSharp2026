@@ -25,9 +25,9 @@ public partial class ProductDetailsPage : ContentPage
 	{
 		InitializeComponent();
         _service = service;
-        pCategory.ItemsSource = EnumExtension.GetValuesWithNames<Category>();
+        pCategory.ItemsSource = EnumExtension.GetValuesWithNames<Category>(); //Initializing Category picker
     }
-
+    //Handling saving product when pressing "Save Changes" button. Making sure there are no empty entries/picker
     private void SaveClicked(object sender, EventArgs e)
     {
         if (String.IsNullOrWhiteSpace(eName.Text))
@@ -53,13 +53,7 @@ public partial class ProductDetailsPage : ContentPage
         if (!String.IsNullOrWhiteSpace(ePrice.Text))
         {
             CurrentProduct.Price = double.Parse(ePrice.Text);
-            
         }
-        //var changedProduct = new ProductUIModel(_currentProduct);
-        //changedProduct.Name = eName.Text;
-        //changedProduct.Quantity = int.Parse(eQuantity.Text);
-        //changedProduct.Category = ((EnumWithName<Category>)pCategory.SelectedItem).Value;
-        //changedProduct.Description = eDescription.Text;
         if (pCategory.SelectedItem is EnumWithName<Category> wrappedCategory)
         {
             CurrentProduct.Category = wrappedCategory.Value;
@@ -67,7 +61,7 @@ public partial class ProductDetailsPage : ContentPage
         _service.SaveProduct(CurrentProduct);
         DisplayAlert("Changes Saved!", $"{CurrentProduct.Name} has been succesfully saved!", "Great!");
     }
-
+    //Handling Quntity entry whenever it's content changes. Making sure only numbers are entered
     private void OnQuantityEntryTextChanged(object sender, TextChangedEventArgs e)
     {
         if (string.IsNullOrEmpty(e.NewTextValue))
@@ -78,6 +72,7 @@ public partial class ProductDetailsPage : ContentPage
             ((Entry)sender).Text = e.OldTextValue;
         }
     }
+    //Handling Price entry whenever it's content changes. Making sure only numbers and up to one "," are entered
     private void OnPriceEntryTextChanged(object sender, TextChangedEventArgs e)
     {
         if (string.IsNullOrEmpty(e.NewTextValue))
