@@ -31,7 +31,34 @@ namespace ProductManager.Services
                 return uiModel;
             }
         }
-
+        //Get all warehouse ui models by warehouse id
+        public IEnumerable<WarehouseUIModel> GetAllWarehousesUI()
+        {
+            _storage.LoadData();
+            var resultList = new List<WarehouseUIModel>();
+            foreach (var warehouse in _storage.GetWarehouses())
+            {
+                var uiModel = new WarehouseUIModel(warehouse);
+                var products = _storage.GetProducts(warehouse.Id);
+                foreach (var product in products)
+                {
+                    uiModel.Products.Add(new ProductUIModel(product));
+                }
+                resultList.Add(uiModel);
+            }
+            return resultList;
+        }
+        public void LoadProducts(WarehouseUIModel uiModel)
+        {
+            uiModel.Products.Clear();
+            _storage.LoadData();
+            var products = _storage.GetProducts(uiModel.Id);
+            foreach (var product in products)
+            {
+                uiModel.Products.Add(new ProductUIModel(product));
+            }
+            uiModel.CalculateTotalCost();
+        }
         public void SaveWarehouse(WarehouseUIModel uiModel)
         {
             WarehouseDBModel dbModel;
