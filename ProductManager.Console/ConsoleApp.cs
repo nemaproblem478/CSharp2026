@@ -179,7 +179,7 @@ namespace ProductManager.Console
 
             System.Console.WriteLine("--Enter new Description or press Enter to skip");
             input = System.Console.ReadLine();
-            if (input != "") product.Description = input;
+            if (input != "" && input != " ") product.Description = input;
 
             System.Console.WriteLine("--Preview of the Product:");
             System.Console.WriteLine(product);

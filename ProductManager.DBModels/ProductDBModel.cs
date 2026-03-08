@@ -4,13 +4,13 @@ namespace ProductManager.DBModels
 {
     public class ProductDBModel
     {
-        private Guid _productId;
+        private readonly Guid _productId;
         private Guid _warehouseId;
-        private string _name;
+        private string _name = null!;
         private int _quantity;
         private double _price;
         private Category _category;
-        private string _description;
+        private string _description = null!;
 
         public Guid ProductId { get => _productId; }
         public Guid WarehouseId { get => _warehouseId; set => _warehouseId = value; }

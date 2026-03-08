@@ -9,8 +9,8 @@ namespace ProductManager.UIModels
     public class WarehouseUIModel
     {
 
-        private WarehouseDBModel _dbModel;
-        private Guid _id;
+        private readonly WarehouseDBModel _dbModel;
+        private readonly Guid _id;
         private string _name;
         private Location _location;
         private ObservableCollection<ProductUIModel> _products;
@@ -29,7 +29,9 @@ namespace ProductManager.UIModels
             }
         }
 
+#pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider adding the 'required' modifier or declaring as nullable.
         private WarehouseUIModel()
+#pragma warning restore CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider adding the 'required' modifier or declaring as nullable.
         {
             _products = new ObservableCollection<ProductUIModel>();
         }

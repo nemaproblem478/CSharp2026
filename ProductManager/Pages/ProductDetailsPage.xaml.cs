@@ -9,7 +9,7 @@ namespace ProductManager.Pages;
 [QueryProperty(nameof(CurrentProduct), "SelectedProduct")]
 public partial class ProductDetailsPage : ContentPage
 {
-	private ProductUIModel _currentProduct;
+	private ProductUIModel _currentProduct = null!;
     private readonly IProductService _service;
 
 	public ProductUIModel CurrentProduct

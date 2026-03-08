@@ -6,7 +6,7 @@ namespace ProductManager.Services
 {
     public class ProductService : IProductService
     {
-        private IStorageService _storage;
+        private readonly IStorageService _storage = null!;
 
         private ProductService() {}
         public ProductService(IStorageService storageSevice)

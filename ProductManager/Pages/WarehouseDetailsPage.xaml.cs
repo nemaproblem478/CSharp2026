@@ -7,7 +7,7 @@ namespace ProductManager.Pages;
 [QueryProperty(nameof(CurrentWarehouse), "SelectedWarehouse")]
 public partial class WarehouseDetailsPage : ContentPage
 {
-	private WarehouseUIModel _currentWarehouse;
+	private WarehouseUIModel _currentWarehouse = null!;
     private readonly IProductService _service;
     public WarehouseUIModel CurrentWarehouse
 	{

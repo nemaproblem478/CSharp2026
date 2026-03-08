@@ -9,7 +9,7 @@ namespace ProductManager.Services
 {
     public interface IWarehouseService
     {
-        public WarehouseUIModel GetWarehouseUI(Guid? id);
+        public WarehouseUIModel GetWarehouseUI(Guid id);
         public IEnumerable<WarehouseUIModel> GetAllWarehousesUI();
         public void LoadProducts(WarehouseUIModel uiModel);
         public void SaveWarehouse(WarehouseUIModel uiModel);

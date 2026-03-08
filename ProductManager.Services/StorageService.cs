@@ -5,8 +5,8 @@ namespace ProductManager.Services
 {
     public class StorageService : IStorageService
     {
-        private List<WarehouseDBModel> _warehouses;
-        private List<ProductDBModel> _products;
+        private List<WarehouseDBModel> _warehouses = null!;
+        private List<ProductDBModel> _products = null!;
 
         public void LoadData()
         {
@@ -16,7 +16,7 @@ namespace ProductManager.Services
             _products = FakeStorage.Products.ToList();
         }
         //Get WarehouseDBModel by id
-        public WarehouseDBModel GetWarehouse(Guid? id)
+        public WarehouseDBModel? GetWarehouse(Guid? id)
         {
             LoadData();
             foreach (var warehouse in _warehouses)
@@ -38,7 +38,7 @@ namespace ProductManager.Services
             return resultList;
         }
         //Get ProductDBModel by product id
-        public ProductDBModel GetProduct(Guid id)
+        public ProductDBModel? GetProduct(Guid id)
         {
             LoadData();
             foreach (var product in _products)

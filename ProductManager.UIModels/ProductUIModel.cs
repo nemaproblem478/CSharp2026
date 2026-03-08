@@ -10,9 +10,9 @@ namespace ProductManager.UIModels
 {
     public class ProductUIModel
     {
-        private ProductDBModel _dbModel;
-        private Guid _productId;
-        private Guid _warehouseId;
+        private readonly ProductDBModel? _dbModel;
+        private readonly Guid _productId;
+        private readonly Guid _warehouseId;
         private string _name;
         private int _quantity;
         private double _price;
@@ -48,10 +48,22 @@ namespace ProductManager.UIModels
         public ProductUIModel(Guid warehouseId)
         {
             _warehouseId = warehouseId;
+            _name = "";
+            _description = "";
         }
-        public ProductUIModel(ProductDBModel dbModel) : this(dbModel.WarehouseId)
+        public ProductUIModel(Guid warehouseId, string name, int quantity, double price, Category category, string description)
+        {
+            _warehouseId = warehouseId;
+            _name = name;
+            _quantity = quantity;
+            _price = price;
+            _category = category;
+            _description = description;
+        }
+        public ProductUIModel(ProductDBModel dbModel)
         {
             _dbModel = dbModel;
+            _warehouseId = dbModel.WarehouseId;
             _productId = dbModel.ProductId;
             _name = dbModel.Name;
             _quantity = dbModel.Quantity;

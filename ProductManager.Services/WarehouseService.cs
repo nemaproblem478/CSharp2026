@@ -6,30 +6,25 @@ namespace ProductManager.Services
 {
     public class WarehouseService : IWarehouseService
     {
-        private IStorageService _storage;
+        private readonly IStorageService _storage;
 
-        private WarehouseService() {}
         public WarehouseService(IStorageService storageSevice)
         {
             _storage = storageSevice;
         }
         //Get warehouse ui model by warehouse id
-        public WarehouseUIModel GetWarehouseUI(Guid? id)
+        public WarehouseUIModel GetWarehouseUI(Guid id)
         {
-            if (id == null) return null;
-            else
-            {
-                var dbModel = _storage.GetWarehouse(id);
-                var uiModel = new WarehouseUIModel(dbModel);
+            var dbModel = _storage.GetWarehouse(id);
+            var uiModel = new WarehouseUIModel(dbModel);
 
-                var products = _storage.GetProducts(id);
-                foreach (var product in products)
-                {
-                    uiModel.Products.Add(new ProductUIModel(product));
-                }
-                uiModel.CalculateTotalCost();
-                return uiModel;
+            var products = _storage.GetProducts(id);
+            foreach (var product in products)
+            {
+                uiModel.Products.Add(new ProductUIModel(product));
             }
+            uiModel.CalculateTotalCost();
+            return uiModel;
         }
         //Get all warehouse ui models
         public IEnumerable<WarehouseUIModel> GetAllWarehousesUI()

@@ -4,7 +4,7 @@ namespace ProductManager.DBModels
 {
     public class WarehouseDBModel
     {
-        private Guid _id;
+        private readonly Guid _id;
         private string _name;
         private Location _location;
 
@@ -12,10 +12,6 @@ namespace ProductManager.DBModels
         public string Name { get => _name; set => _name = value; }
         public Location Location { get => _location; set => _location = value; }
 
-        private WarehouseDBModel()
-        {
-
-        }
         public WarehouseDBModel(string name, Location location) : this(Guid.NewGuid(), name, location)
         {
         }
