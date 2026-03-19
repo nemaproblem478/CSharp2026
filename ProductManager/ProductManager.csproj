@@ -57,20 +57,18 @@
 	</ItemGroup>
 
 	<ItemGroup>
+		<PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.0" />
 		<PackageReference Include="Microsoft.Maui.Controls" Version="$(MauiVersion)" />
 		<PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="9.0.8" />
 	</ItemGroup>
 
 	<ItemGroup>
+	  <ProjectReference Include="..\DTOModels\ProductManager.DTOModels.csproj" />
 	  <ProjectReference Include="..\ProductManager.CommonComponents\ProductManager.CommonComponents.csproj" />
 	  <ProjectReference Include="..\ProductManager.Services\ProductManager.Services.csproj" />
-	  <ProjectReference Include="..\ProductManager.UIModels\ProductManager.UIModels.csproj" />
 	</ItemGroup>
 
 	<ItemGroup>
-	  <MauiXaml Update="Pages\ProductCreatePage.xaml">
-	    <Generator>MSBuild:Compile</Generator>
-	  </MauiXaml>
 	  <MauiXaml Update="Pages\ProductDetailsPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>

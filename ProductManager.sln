@@ -19,6 +19,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProductManager.Storage", "P
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProductManager.Repository", "ProductManager.Repository\ProductManager.Repository.csproj", "{BCF72E06-8ACC-4A05-B948-FE095E8D7DC5}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProductManager.DTOModels", "DTOModels\ProductManager.DTOModels.csproj", "{658D9DC5-F0D3-4D42-A4D5-F7765A350E0A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -58,6 +60,10 @@ Global
 		{BCF72E06-8ACC-4A05-B948-FE095E8D7DC5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BCF72E06-8ACC-4A05-B948-FE095E8D7DC5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BCF72E06-8ACC-4A05-B948-FE095E8D7DC5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{658D9DC5-F0D3-4D42-A4D5-F7765A350E0A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{658D9DC5-F0D3-4D42-A4D5-F7765A350E0A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{658D9DC5-F0D3-4D42-A4D5-F7765A350E0A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{658D9DC5-F0D3-4D42-A4D5-F7765A350E0A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
