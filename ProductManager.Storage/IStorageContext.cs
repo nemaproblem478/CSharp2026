@@ -5,7 +5,11 @@ namespace ProductManager.Storage
     public interface IStorageContext
     {
         IEnumerable<WarehouseDBModel> GetWarehouses();
-        IEnumerable<ProductDBModel> GetProductsByWarehouse(Guid departmentId);
-        int GetProductsByWarehouseCount(Guid id);
+        WarehouseDBModel GetWarehouse(Guid warehouseId);
+        IEnumerable<ProductDBModel> GetProductsByWarehouse(Guid warehouseId);
+        ProductDBModel GetProduct(Guid productId);
+        void SaveProduct(ProductDBModel newProduct);
+        int GetProductsByWarehouseCount(Guid warehouseId);
+        double GetWarehouseTotalCost(Guid warehouseId);
     }
 }
