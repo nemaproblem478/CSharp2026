@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             xmlns:models="clr-namespace:ProductManager.UIModels;assembly=ProductManager.UIModels"
+             xmlns:models="clr-namespace:ProductManager.DTOModels.Product;assembly=ProductManager.DTOModels"
+             xmlns:vms="clr-namespace:ProductManager.Viewmodels"
              x:Class="ProductManager.Pages.WarehouseDetailsPage"
-             x:DataType="models:WarehouseUIModel"
+             x:DataType="vms:WarehouseDetailsViewModel"
              Title="Warehouse Details">
     <Grid RowDefinitions="Auto,5*,Auto">
         <Border 
@@ -15,20 +16,24 @@
             BackgroundColor="BlueViolet">
             <VerticalStackLayout>
                 <Label
+                    Text="{Binding CurrentWarehouse.Name}"
                     Style="{StaticResource SubHeadline}"
+                    TextColor="White">
+                </Label>
+                <Label 
+                    HorizontalOptions="Center"
                     TextColor="White">
                     <Label.Text>
                         <MultiBinding
-                            StringFormat="{}{0} (Total: ${1})">
-                            <Binding Path="Name"></Binding>
-                            <Binding Path="TotalCost"></Binding>
+                            StringFormat="{}Located in {0}, Products: {1}, Total: ${2}">
+                            <Binding Path="CurrentWarehouse.Location"
+                                     Converter="{StaticResource EnumToDisplayName}">
+                            </Binding>
+                            <Binding Path="CurrentWarehouse.ProductCount"></Binding>
+                            <Binding Path="CurrentWarehouse.TotalCost"></Binding>
                         </MultiBinding>
                     </Label.Text>
                 </Label>
-                <Label 
-                    Text="{Binding Location, Converter={StaticResource EnumToDisplayName}}"
-                    HorizontalOptions="Center"
-                    TextColor="White"/>
             </VerticalStackLayout>
         </Border>
         <Border
@@ -37,15 +42,19 @@
             Margin="0,0">
             <CollectionView
                 ItemsSource="{Binding Products}"
-                SelectionMode="Single"
-                SelectionChanged="ProductSelected"
+                SelectionMode="None"
                 >
                 <CollectionView.ItemTemplate>
                     <DataTemplate
-                        x:DataType="models:ProductUIModel">
+                        x:DataType="models:ProductListDTO">
                         <Border
                             Padding="10"
                             >
+                            <Border.GestureRecognizers>
+                                <TapGestureRecognizer
+                                    Command="{Binding Source={RelativeSource AncestorType={x:Type vms:WarehouseDetailsViewModel}}, Path=LoadProductCommand}"
+                                    CommandParameter="{Binding Id}"/>
+                            </Border.GestureRecognizers>
                             <VerticalStackLayout>
                                 <Label
                                     Style="{StaticResource SubHeadline}"
@@ -67,15 +76,21 @@
                 </CollectionView.ItemTemplate>
             </CollectionView>
         </Border>
-        <Button
+        <Border
             Grid.Row="2"
+            Padding="10"
             BackgroundColor="BlueViolet"
-            Clicked="CreateClicked"
-            Text="Add Product"
-            TextColor="White"
-            FontSize="Title"
-            CornerRadius="0"
-            Margin="0">
-        </Button>
+            StrokeThickness="5"
+            Stroke="BlueViolet">
+            <Border.GestureRecognizers>
+                <TapGestureRecognizer
+                    Command="{Binding Source={RelativeSource AncestorType={x:Type vms:WarehouseDetailsViewModel}}, Path=CreateClickedCommand}"/>
+            </Border.GestureRecognizers>
+            <Label
+                Text="Add Product"
+                TextColor="White"
+                Style="{StaticResource SubHeadline}"
+                />
+        </Border>
     </Grid>
 </ContentPage>
