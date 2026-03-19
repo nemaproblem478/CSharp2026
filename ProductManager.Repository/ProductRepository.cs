@@ -1,10 +1,12 @@
-﻿using ProductManager.Storage;
+﻿using ProductManager.DBModels;
+using ProductManager.DTOModels;
+using ProductManager.DTOModels.Product;
+using ProductManager.Storage;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using ProductManager.DBModels;
 
 namespace ProductManager.Repository
 {
@@ -19,9 +21,13 @@ namespace ProductManager.Repository
         {
             return _storageContext.GetProductsByWarehouse(warehouseId);
         }
-        public int GetProductsByWarehouseCount(Guid warehouseId)
+        public ProductDBModel GetProduct(Guid productId)
         {
-            return _storageContext.GetProductsByWarehouseCount(warehouseId);
+            return _storageContext.GetProduct(productId);
+        }
+        public void SaveProduct(ProductDBModel product)
+        {
+            _storageContext.SaveProduct(product);
         }
     }
 }

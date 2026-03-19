@@ -10,6 +10,7 @@ namespace ProductManager.Repository
     public interface IProductRepository
     {
         IEnumerable<ProductDBModel> GetProductsByWarehouse(Guid warehouseId);
-        int GetProductsByWarehouseCount(Guid warehouseId);
+        ProductDBModel GetProduct(Guid productId);
+        void SaveProduct(ProductDBModel product);
     }
 }

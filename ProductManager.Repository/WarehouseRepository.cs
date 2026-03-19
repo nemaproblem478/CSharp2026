@@ -1,10 +1,11 @@
-﻿using System;
+﻿using ProductManager.DBModels;
+using ProductManager.DTOModels.Warehouse;
+using ProductManager.Storage;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using ProductManager.DBModels;
-using ProductManager.Storage;
 
 namespace ProductManager.Repository
 {
@@ -18,6 +19,18 @@ namespace ProductManager.Repository
         public IEnumerable<WarehouseDBModel> GetWarehouses()
         {
             return _storageContext.GetWarehouses();
+        }
+        public WarehouseDBModel GetWarehouse(Guid warehouseId)
+        {
+            return _storageContext.GetWarehouse(warehouseId);
+        }
+        public int GetProductsByWarehouseCount(Guid warehouseId)
+        {
+            return _storageContext.GetProductsByWarehouseCount(warehouseId);
+        }
+        public double GetWarehouseTotalCost(Guid warehouseId)
+        {
+            return _storageContext.GetWarehouseTotalCost(warehouseId);
         }
     }
 }
