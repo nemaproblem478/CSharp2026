@@ -2,36 +2,37 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:pages="clr-namespace:ProductManager.Pages"
-             xmlns:models="clr-namespace:ProductManager.UIModels;assembly=ProductManager.UIModels"
+             xmlns:models="clr-namespace:ProductManager.DTOModels.Warehouse;assembly=ProductManager.DTOModels"
+             xmlns:vms="clr-namespace:ProductManager.Viewmodels"
              x:Class="ProductManager.Pages.WarehousesPage"
-             x:DataType="pages:WarehousesPage"
+             x:DataType="vms:WarehousesViewModel"
              Title="Warehouses">
     <CollectionView
         x:Name="warehouseCollectionView"
-        ItemsSource="{Binding Warehouses}"
+        ItemsSource="{Binding Path=Warehouses}"
         Margin="10"
-        SelectionMode="Single"
-        SelectionChanged="WarehouseSelected">
+        SelectionMode="None">
         <CollectionView.ItemTemplate>
             <DataTemplate
-                x:DataType="models:WarehouseUIModel">
+                x:DataType="models:WarehouseListDTO">
                 <Border
                     Stroke="BlueViolet"
                     Padding="10"
                     Margin="0,10">
-                    <VerticalStackLayout>
-                        <Label
-                            Style="{StaticResource SubHeadline}"
-                            Text="{Binding Name}"/>
-                        <Label
-                            Text="{Binding TotalCost, StringFormat='Total: ${0}'}"
-                            HorizontalOptions="Center"
-                            />
-                        <Label 
-                            Text="{Binding Location, Converter={StaticResource EnumToDisplayName}, StringFormat='Location: {0}'}"
-                            HorizontalOptions="Center"
-                            />
-                    </VerticalStackLayout>
+                <Border.GestureRecognizers>
+                    <TapGestureRecognizer
+                        Command="{Binding Source={RelativeSource AncestorType={x:Type vms:WarehousesViewModel}}, Path=LoadWarehouseCommand}"
+                        CommandParameter="{Binding Id}"/>
+                </Border.GestureRecognizers>
+                <VerticalStackLayout>
+                    <Label
+                        Style="{StaticResource SubHeadline}"
+                        Text="{Binding Name}"/>
+                    <Label
+                        Text="{Binding TotalCost, StringFormat='Total: ${0}'}"
+                        HorizontalOptions="Center"
+                        />
+                </VerticalStackLayout>
                 </Border>
             </DataTemplate>
         </CollectionView.ItemTemplate>
