@@ -1,75 +1,43 @@
 ﻿using ProductManager.CommonComponents;
 using ProductManager.DBModels;
-using ProductManager.UIModels;
+using ProductManager.DTOModels.Warehouse;
+using ProductManager.Repository;
 
 namespace ProductManager.Services
 {
     public class WarehouseService : IWarehouseService
     {
-        private readonly IStorageService _storage;
+        private readonly IWarehouseRepository _repository;
 
-        public WarehouseService(IStorageService storageSevice)
+        public WarehouseService(IWarehouseRepository repository)
         {
-            _storage = storageSevice;
+            _repository = repository;
         }
         //Get warehouse ui model by warehouse id
-        public WarehouseUIModel GetWarehouseUI(Guid id)
+        public WarehouseDetailsDTO GetWarehouse(Guid id)
         {
-            var dbModel = _storage.GetWarehouse(id);
-            var uiModel = new WarehouseUIModel(dbModel);
-
-            var products = _storage.GetProducts(id);
-            foreach (var product in products)
-            {
-                uiModel.Products.Add(new ProductUIModel(product));
-            }
-            uiModel.CalculateTotalCost();
-            return uiModel;
+            var warehouse = _repository.GetWarehouse(id);
+            return warehouse is null ? null : new WarehouseDetailsDTO(warehouse.Id, warehouse.Name, warehouse.Location, _repository.GetWarehouseTotalCost(warehouse.Id), _repository.GetProductsByWarehouseCount(warehouse.Id));
         }
         //Get all warehouse ui models
-        public IEnumerable<WarehouseUIModel> GetAllWarehousesUI()
+        public IEnumerable<WarehouseListDTO> GetAllWarehouses()
         {
-            _storage.LoadData();
-            var resultList = new List<WarehouseUIModel>();
-            foreach (var warehouse in _storage.GetWarehouses())
+            foreach (var warehouse in _repository.GetWarehouses())
             {
-                var uiModel = new WarehouseUIModel(warehouse);
-                var products = _storage.GetProducts(warehouse.Id);
-                foreach (var product in products)
-                {
-                    uiModel.Products.Add(new ProductUIModel(product));
-                }
-                resultList.Add(uiModel);
+                yield return new WarehouseListDTO(warehouse.Id, warehouse.Name, _repository.GetWarehouseTotalCost(warehouse.Id));
             }
-            return resultList;
         }
         //Load Products to WarehouseUIModel
-        public void LoadProducts(WarehouseUIModel uiModel)
-        {
-            uiModel.Products.Clear();
-            _storage.LoadData();
-            var products = _storage.GetProducts(uiModel.Id);
-            foreach (var product in products)
-            {
-                uiModel.Products.Add(new ProductUIModel(product));
-            }
-            uiModel.CalculateTotalCost();
-        }
-        public void SaveWarehouse(WarehouseUIModel uiModel)
-        {
-            WarehouseDBModel dbModel;
-
-            dbModel = _storage.GetWarehouse(uiModel.Id);
-            if (dbModel != null)
-            {
-                dbModel.Name = uiModel.Name;
-                dbModel.Location = uiModel.Location;
-            }
-            else
-            {
-                dbModel = new WarehouseDBModel(uiModel.Name, uiModel.Location);
-                _storage.AddWarehouse(dbModel);
-            }
-        }
+        //public void LoadProducts(WarehouseUIModel uiModel)
+        //{
+        //    uiModel.Products.Clear();
+        //    _repository.LoadData();
+        //    var products = _repository.GetProducts(uiModel.Id);
+        //    foreach (var product in products)
+        //    {
+        //        uiModel.Products.Add(new ProductUIModel(product));
+        //    }
+        //    uiModel.CalculateTotalCost();
+        //}
     }
 }

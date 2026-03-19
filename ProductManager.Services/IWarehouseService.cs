@@ -4,14 +4,15 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using ProductManager.DTOModels;
+using ProductManager.DTOModels.Warehouse;
 
 namespace ProductManager.Services
 {
     public interface IWarehouseService
     {
-        public WarehouseUIModel GetWarehouseUI(Guid id);
-        public IEnumerable<WarehouseUIModel> GetAllWarehousesUI();
-        public void LoadProducts(WarehouseUIModel uiModel);
-        public void SaveWarehouse(WarehouseUIModel uiModel);
+        public WarehouseDetailsDTO GetWarehouse(Guid id);
+        public IEnumerable<WarehouseListDTO> GetAllWarehouses();
+        //public void LoadProducts(WarehouseUIModel uiModel);
     }
 }

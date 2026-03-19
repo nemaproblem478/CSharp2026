@@ -1,57 +1,40 @@
 ﻿using ProductManager.CommonComponents;
 using ProductManager.DBModels;
-using ProductManager.UIModels;
+using ProductManager.DTOModels.Product;
+using ProductManager.Repository;
 
 namespace ProductManager.Services
 {
     public class ProductService : IProductService
     {
-        private readonly IStorageService _storage = null!;
+        private readonly IProductRepository _repository;
 
-        private ProductService() {}
-        public ProductService(IStorageService storageSevice)
+        public ProductService(IProductRepository repository)
         {
-            _storage = storageSevice;
+            _repository = repository;
         }
 
-        //Get all products ui models by product id
-        public ProductUIModel GetProductUI(Guid id)
+        //Get ProductDetailsDTO model by product id
+        public ProductDetailsDTO GetProduct(Guid id)
         {
-            var dbModel = _storage.GetProduct(id);
-            var uiModel = new ProductUIModel(dbModel);
+            var product = _repository.GetProduct(id);
 
-            return uiModel;
+            return product is null ? null : new ProductDetailsDTO(product.ProductId, product.WarehouseId, product.Name, product.Description, product.Category, product.Quantity, product.Price);
         }
-        //Get all products ui models by warehouse id
-        public IEnumerable<ProductUIModel> GetProductsUI(Guid? warehouseId)
+        //Get all ProductListDTO models by warehouse id
+        public IEnumerable<ProductListDTO> GetProducts(Guid warehouseId)
         {
-            _storage.LoadData();
-            var resultList = new List<ProductUIModel>();
-            foreach (var product in _storage.GetProducts(warehouseId))
+            foreach (var product in _repository.GetProductsByWarehouse(warehouseId))
             {
-                resultList.Add(new ProductUIModel(product));
+                yield return new ProductListDTO(product.ProductId, product.Name, product.Category, product.Price);
             }
-            return resultList;
         }
-        //Save ProductUIModel to storage
-        public void SaveProduct(ProductUIModel uiModel)
+        //Save Product to storage
+        public void SaveProduct(ProductDetailsDTO productDTO)
         {
-            ProductDBModel dbModel;
+            var dbModel = new ProductDBModel(productDTO.ProductId, productDTO.WarehouseId, productDTO.Name, productDTO.Quantity, productDTO.Price, productDTO.Category, productDTO.Description);
 
-            dbModel = _storage.GetProduct(uiModel.ProductId);
-            if (dbModel != null)
-            {
-                dbModel.Name = uiModel.Name;
-                dbModel.Quantity = uiModel.Quantity;
-                dbModel.Price = uiModel.Price;
-                dbModel.Category = uiModel.Category;
-                dbModel.Description = uiModel.Description;
-            }
-            else
-            {
-                dbModel = new ProductDBModel(uiModel.WarehouseId, uiModel.Name, uiModel.Quantity, uiModel.Price, uiModel.Category, uiModel.Description);
-                _storage.AddProduct(dbModel);
-            }
+            _repository.SaveProduct(dbModel);
         }
     }
 }
