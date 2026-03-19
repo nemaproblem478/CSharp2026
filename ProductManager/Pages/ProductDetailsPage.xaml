@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             xmlns:models="clr-namespace:ProductManager.UIModels;assembly=ProductManager.UIModels"
+             xmlns:vms="clr-namespace:ProductManager.Viewmodels"
              x:Class="ProductManager.Pages.ProductDetailsPage"
-             x:DataType="models:ProductUIModel"
+             x:DataType="vms:ProductDetailsViewModel"
              Title="Product Details">
     <ScrollView>
         <VerticalStackLayout
@@ -17,6 +17,7 @@
                 x:Name="eName"
                 Text="{Binding Name}"
                 FontSize="20"
+                Placeholder="Enter Name"
             />
 
             <Label
@@ -25,7 +26,7 @@
             <Entry
                 x:Name="eDescription"
                 Text="{Binding Description}"
-                Placeholder="New Description"
+                Placeholder="Enter Description"
                 FontSize="20"
             />
 
@@ -33,12 +34,13 @@
                 Text="Category"
                 FontSize="20"/>
             <Picker 
-                Title="{Binding Category, Converter={StaticResource EnumToDisplayName}}"
+                Title="{Binding SelectedCategory, Converter={StaticResource EnumToDisplayName}}"
                 FontSize="20"
                 VerticalOptions="Start"
                 x:Name="pCategory"
+                ItemsSource="{Binding Categories}"
                 ItemDisplayBinding="{Binding DisplayName}"
-                SelectedItem="{Binding Category}"
+                SelectedItem="{Binding SelectedCategory}"
             />
 
             <Label
@@ -46,11 +48,10 @@
                 FontSize="20"/>
             <Entry
                 x:Name="eQuantity"
-                Text="{Binding Quantity}"
-                Placeholder="New Quantity"
+                Text="{Binding QuantityText}"
+                Placeholder="Enter Quantity"
                 FontSize="20"
                 Keyboard="Numeric"
-                TextChanged="OnQuantityEntryTextChanged"
             />
             
             <Label
@@ -58,30 +59,29 @@
                 FontSize="20"/>
             <Entry
                 x:Name="ePrice"
-                Text="{Binding Price}"
-                Placeholder="New Price"
+                Text="{Binding PriceText}"
+                Placeholder="Enter Price"
                 FontSize="20"
                 Keyboard="Numeric"
-                TextChanged="OnPriceEntryTextChanged"
             />
             
             <Label
                 Text="Total Cost"
                 FontSize="20"/>
             <Entry
-                Text="{Binding TotalCost}"
+                Text="{Binding TotalCost,Mode=OneWay}"
                 FontSize="20"
                 IsReadOnly="True"
             />
 
             <Button
-                Text="Save Changes"
+                Text="Save"
                 TextColor="White"
                 FontSize="Title"
-                Clicked="SaveClicked"
                 BackgroundColor="BlueViolet"
                 Margin="0,10"
-                />
+                Command="{Binding SaveClickedCommand}"
+            />
 
 
         </VerticalStackLayout>
