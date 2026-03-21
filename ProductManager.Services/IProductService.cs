@@ -1,5 +1,4 @@
-﻿using ProductManager.UIModels;
-using ProductManager.DTOModels;
+﻿using ProductManager.DTOModels;
 using ProductManager.DTOModels.Product;
 
 namespace ProductManager.Services
