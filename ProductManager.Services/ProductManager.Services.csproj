@@ -9,7 +9,6 @@
 	<ItemGroup>
 		<ProjectReference Include="..\DTOModels\ProductManager.DTOModels.csproj" />
 		<ProjectReference Include="..\ProductManager.Repository\ProductManager.Repository.csproj" />
-		<ProjectReference Include="..\ProductManager.UIModels\ProductManager.UIModels.csproj" />
 	</ItemGroup>
 
 </Project>
