@@ -12,6 +12,5 @@ namespace ProductManager.Services
     {
         public WarehouseDetailsDTO GetWarehouse(Guid id);
         public IEnumerable<WarehouseListDTO> GetAllWarehouses();
-        //public void LoadProducts(WarehouseUIModel uiModel);
     }
 }
