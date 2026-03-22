@@ -61,17 +61,18 @@ namespace ProductManager.Storage
         public ProductDBModel GetProduct(Guid productId)
         {
             var product = _products.FirstOrDefault(product => product.Id == productId);
+            //if returned product is null, return null. if not null, then return DBModel based on the found one
             return product is null ? null : new ProductDBModel(product.Id, product.WarehouseId, product.Name, product.Quantity, product.Price, product.Category, product.Description);
         }
         public void SaveProduct(ProductDBModel newProduct)
         {
             int index = _products.FindIndex(p => p.Id == newProduct.ProductId);
             
-            if (index != -1)
+            if (index != -1) //if found index for Product, replace old record with a new one
             {
                 _products[index] = new ProductRecord(newProduct.ProductId, newProduct.WarehouseId, newProduct.Name, newProduct.Quantity, newProduct.Price, newProduct.Category, newProduct.Description);
             }
-            else
+            else //if not, then add new record to the end of the list
             {
                 _products.Add(new ProductRecord(newProduct.ProductId, newProduct.WarehouseId, newProduct.Name, newProduct.Quantity, newProduct.Price, newProduct.Category, newProduct.Description));
             }
