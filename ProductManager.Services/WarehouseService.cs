@@ -13,13 +13,13 @@ namespace ProductManager.Services
         {
             _repository = repository;
         }
-        //Get warehouse ui model by warehouse id
+        //Get WarehouseDetailsDTO model by warehouse id
         public WarehouseDetailsDTO GetWarehouse(Guid id)
         {
             var warehouse = _repository.GetWarehouse(id);
             return warehouse is null ? null : new WarehouseDetailsDTO(warehouse.Id, warehouse.Name, warehouse.Location, _repository.GetWarehouseTotalCost(warehouse.Id), _repository.GetProductsByWarehouseCount(warehouse.Id));
         }
-        //Get all warehouse ui models
+        //Get all WarehouseListDTO models
         public IEnumerable<WarehouseListDTO> GetAllWarehouses()
         {
             foreach (var warehouse in _repository.GetWarehouses())
@@ -27,17 +27,5 @@ namespace ProductManager.Services
                 yield return new WarehouseListDTO(warehouse.Id, warehouse.Name, _repository.GetWarehouseTotalCost(warehouse.Id));
             }
         }
-        //Load Products to WarehouseUIModel
-        //public void LoadProducts(WarehouseUIModel uiModel)
-        //{
-        //    uiModel.Products.Clear();
-        //    _repository.LoadData();
-        //    var products = _repository.GetProducts(uiModel.Id);
-        //    foreach (var product in products)
-        //    {
-        //        uiModel.Products.Add(new ProductUIModel(product));
-        //    }
-        //    uiModel.CalculateTotalCost();
-        //}
     }
 }
