@@ -4,9 +4,16 @@
              xmlns:pages="clr-namespace:ProductManager.Pages"
              xmlns:models="clr-namespace:ProductManager.DTOModels.Warehouse;assembly=ProductManager.DTOModels"
              xmlns:vms="clr-namespace:ProductManager.Viewmodels"
+             xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
              x:Class="ProductManager.Pages.WarehousesPage"
              x:DataType="vms:WarehousesViewModel"
+             x:Name="Page"
              Title="Warehouses">
+    <ContentPage.Behaviors>
+        <toolkit:EventToCommandBehavior
+            EventName="Appearing"
+            Command="{Binding BindingContext.LoadDataCommand, Source={x:Reference Page}}" />
+    </ContentPage.Behaviors>
     <CollectionView
         x:Name="warehouseCollectionView"
         ItemsSource="{Binding Path=Warehouses}"

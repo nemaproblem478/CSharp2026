@@ -24,6 +24,14 @@ namespace ProductManager.Viewmodels
             Warehouses = new ObservableCollection<WarehouseListDTO>(_warehouseService.GetAllWarehouses());
         }
 
+        //Load Warehouses on appearing
+        [RelayCommand]
+        public void LoadData()
+        {
+            Warehouses = new ObservableCollection<WarehouseListDTO>(_warehouseService.GetAllWarehouses());
+        }
+
+        //Choosing a Warehouse from WarehousesPage
         [RelayCommand]
         private void LoadWarehouse(Guid warehouseId)
         {
