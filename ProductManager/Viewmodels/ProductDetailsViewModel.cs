@@ -45,20 +45,25 @@ namespace ProductManager.Viewmodels
 
         public void ApplyQueryAttributes(IDictionary<string, object> query)
         {
+            //If query contains ProductId (Choosing a Product from WarehouseDetailsPage), then get the ProductId. Else, create new Guid (Add Product)
             _productId = query.ContainsKey("ProductId") ? (Guid)query["ProductId"] : Guid.NewGuid();
+            //Get product by Id. IS null when creating new Product
             _currentProduct = _productService.GetProduct(_productId);
+            //If query contains WarehouseId (Add Product), then get the WarehouseId. Else, get WarehouseId from current Product (Choosing a Product from WarehouseDetailsPage)
             _warehouseId = query.ContainsKey("WarehouseId") ? (Guid)query["WarehouseId"] : _currentProduct.WarehouseId;
 
+            //Initialise entries
             Name = _currentProduct?.Name;
             Description = _currentProduct?.Description;
+            //If Category is null, then set to ElectricGuitar
             SelectedCategory = _currentProduct is null ? Category.ElectricGuitar : _currentProduct.Category;
-            //_currentProduct is null ? _currentProduct?.Category : CommonComponents.Category.ElectricGuitar
             QuantityText = _currentProduct?.Quantity.ToString();
             PriceText = _currentProduct?.Price.ToString();
         }
 
         partial void OnPriceTextChanged(string value)
         {
+            //If entry is parseable, then Parse and write to Property
             if (double.TryParse(value, out double parsedValue))
             {
                 PriceDouble = parsedValue;
@@ -67,6 +72,7 @@ namespace ProductManager.Viewmodels
 
         partial void OnQuantityTextChanged(string value)
         {
+            //If entry is parseable, then Parse and write to Property
             if (int.TryParse(value, out int parsedValue))
             {
                 QuantityInt = parsedValue;
@@ -76,6 +82,7 @@ namespace ProductManager.Viewmodels
         [RelayCommand]
         private void SaveClicked()
         {
+            //Check if entries are empty (Category is set to ElectricGuitar by default)
             if (string.IsNullOrWhiteSpace(Name))
             {
                 Shell.Current.DisplayAlert("Product hasn't been saved!", "Input a Name.", "Ok ig.");
@@ -84,11 +91,6 @@ namespace ProductManager.Viewmodels
             if (string.IsNullOrWhiteSpace(Description))
             {
                 Shell.Current.DisplayAlert("Product hasn't been saved!", "Input a Description.", "Ok ig.");
-                return;
-            }
-            if (SelectedCategory == null)
-            {
-                Shell.Current.DisplayAlert("Product hasn't been saved!", "Choose a Category.", "Ok ig.");
                 return;
             }
             if (QuantityText == null)
@@ -101,20 +103,14 @@ namespace ProductManager.Viewmodels
                 Shell.Current.DisplayAlert("Product hasn't been saved!", "Input Price.", "Ok ig.");
                 return;
             }
-            if (_currentProduct == null)
-            {
-                _currentProduct = new ProductDetailsDTO(_productId, _warehouseId, Name, Description, SelectedCategory, QuantityInt, PriceDouble);
-            } else
-            {
-                _currentProduct.Name = Name;
-                _currentProduct.Description = Description;
-                _currentProduct.Category = (Category)SelectedCategory;
-                _currentProduct.Quantity = QuantityInt;
-                _currentProduct.Price = PriceDouble;
-            }
 
+            //Create new DTO based on entries
+            _currentProduct = new ProductDetailsDTO(_productId, _warehouseId, Name, Description, SelectedCategory, QuantityInt, PriceDouble);
+
+            //Save to storage
             _productService.SaveProduct(_currentProduct);
 
+            //Display confirmation message
             Shell.Current.DisplayAlert("Product has been saved!", $"{Name} has been saved!", "Great!");
             return;
         }

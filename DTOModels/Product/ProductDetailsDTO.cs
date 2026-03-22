@@ -9,13 +9,13 @@ namespace ProductManager.DTOModels.Product
 {
     public class ProductDetailsDTO
     {
-        public Guid ProductId { get; set; }
-        public Guid WarehouseId { get; set; }
-        public string Name { get; set; }
-        public string Description { get; set; }
-        public Category Category { get; set; }
-        public int Quantity { get; set; }
-        public double Price { get; set; }
+        public Guid ProductId { get; }
+        public Guid WarehouseId { get; }
+        public string Name { get; }
+        public string Description { get; }
+        public Category Category { get; }
+        public int Quantity { get; }
+        public double Price { get; }
         public ProductDetailsDTO(Guid productId, Guid warehouseId, string name, string description, Category category, int quantity, double price)
         {
             ProductId = productId;
