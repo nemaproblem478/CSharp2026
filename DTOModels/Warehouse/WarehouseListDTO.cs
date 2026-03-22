@@ -6,7 +6,7 @@ namespace ProductManager.DTOModels.Warehouse
     {
         public Guid Id { get; }
         public string Name { get; }
-        public double TotalCost { get; set; }
+        public double TotalCost { get; }
 
         public WarehouseListDTO(Guid id, string name, double totalCost)
         {
