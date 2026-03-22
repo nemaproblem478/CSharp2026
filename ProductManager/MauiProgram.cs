@@ -4,6 +4,7 @@ using ProductManager.Services;
 using ProductManager.Repository;
 using ProductManager.Storage;
 using ProductManager.Viewmodels;
+using CommunityToolkit.Maui;
 
 namespace ProductManager
 {
@@ -12,6 +13,7 @@ namespace ProductManager
         public static MauiApp CreateMauiApp()
         {
             var builder = MauiApp.CreateBuilder();
+            builder.UseMauiCommunityToolkit();
             builder
                 .UseMauiApp<App>()
                 .ConfigureFonts(fonts =>
