@@ -31,12 +31,14 @@ namespace ProductManager.Viewmodels
             Products = new ObservableCollection<ProductListDTO>(_productService.GetProducts(warehouseId));
         }
 
+        //Choosing a Product from WarehouseDetailsPage
         [RelayCommand]
         private void LoadProduct(Guid productId)
         {
             Shell.Current.GoToAsync($"{nameof(ProductDetailsPage)}", new Dictionary<string, object> { { "ProductId", productId } });
         }
 
+        //Add Product
         [RelayCommand]
         private void CreateClicked()
         {
