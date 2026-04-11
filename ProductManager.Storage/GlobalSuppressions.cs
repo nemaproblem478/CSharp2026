@@ -5,5 +5,5 @@
 
 using System.Diagnostics.CodeAnalysis;
 
-[assembly: SuppressMessage("Style", "IDE0028:Simplify collection initialization", Justification = "<Pending>", Scope = "type", Target = "~T:ProductManager.Storage.InMemoryStorage")]
-[assembly: SuppressMessage("Style", "IDE0090:Use 'new(...)'", Justification = "<Pending>", Scope = "type", Target = "~T:ProductManager.Storage.InMemoryStorage")]
+[assembly: SuppressMessage("Style", "IDE0028:Simplify collection initialization", Justification = "<Pending>", Scope = "type", Target = "~T:ProductManager.Storage.InMemoryStorageContext")]
+[assembly: SuppressMessage("Style", "IDE0090:Use 'new(...)'", Justification = "<Pending>", Scope = "type", Target = "~T:ProductManager.Storage.InMemoryStorageContext")]

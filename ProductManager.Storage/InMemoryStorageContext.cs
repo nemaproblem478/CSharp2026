@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace ProductManager.Storage
 {
-    public class InMemoryStorage : IStorageContext
+    public class InMemoryStorageContext : IStorageContext
     {
         private record class WarehouseRecord(Guid Id, string Name, Location Location);
         private record class ProductRecord(Guid Id, Guid WarehouseId, string Name, int Quantity, double Price, Category Category, string Description);
@@ -17,7 +17,7 @@ namespace ProductManager.Storage
         private static readonly List<WarehouseRecord> _warehouses = new List<WarehouseRecord>();
         private static readonly List<ProductRecord> _products = new List<ProductRecord>();
 
-        static InMemoryStorage()
+        static InMemoryStorageContext()
         {
             //Initializing storage
             var warehouseLypky = new WarehouseRecord(Guid.NewGuid(), "Lypky", Location.Kyiv);
@@ -42,30 +42,37 @@ namespace ProductManager.Storage
             _products.Add(new ProductRecord(Guid.NewGuid(), warehouseZahid.Id, "Woodstock Standard Tele MN Vintage White", 1, 280, Category.ElectricGuitar, "The Woodstock Standard Tele guitar is designed for blues, indie rock, rock 'n' roll, and country.\nThe guitar's thick, bright tone and balanced character make it a versatile instrument for live and studio use."));
         }
 
-        public IEnumerable<WarehouseDBModel> GetWarehouses()
+        public async IAsyncEnumerable<WarehouseDBModel> GetWarehousesAsync()
         {
             foreach (var warehouse in _warehouses)
             {
+                await Task.Delay(500);
                 yield return new WarehouseDBModel(warehouse.Id, warehouse.Name, warehouse.Location);
             }
         }
-        public WarehouseDBModel GetWarehouse(Guid warehouseId)
+        public async Task<WarehouseDBModel> GetWarehouseAsync(Guid warehouseId)
         {
+            await Task.Delay(1000);
             var warehouse = _warehouses.FirstOrDefault(warehouse => warehouse.Id == warehouseId);
             return warehouse is null ? null : new WarehouseDBModel(warehouse.Id, warehouse.Name, warehouse.Location);
+
         }
-        public IEnumerable<ProductDBModel> GetProductsByWarehouse(Guid warehouseId)
+        public async Task<IEnumerable<ProductDBModel>> GetProductsByWarehouseAsync(Guid warehouseId)
         {
+            await Task.Delay(1000);
             return _products.Where(product => product.WarehouseId == warehouseId).Select(product => new ProductDBModel(product.Id, product.WarehouseId, product.Name, product.Quantity, product.Price, product.Category, product.Description));
         }
-        public ProductDBModel GetProduct(Guid productId)
+        public async Task<ProductDBModel> GetProductAsync(Guid productId)
         {
+            await Task.Delay(1000);
             var product = _products.FirstOrDefault(product => product.Id == productId);
             //if returned product is null, return null. if not null, then return DBModel based on the found one
             return product is null ? null : new ProductDBModel(product.Id, product.WarehouseId, product.Name, product.Quantity, product.Price, product.Category, product.Description);
+
         }
-        public void SaveProduct(ProductDBModel newProduct)
+        public async Task SaveProductAsync(ProductDBModel newProduct)
         {
+            await Task.Delay(1000);
             int index = _products.FindIndex(p => p.Id == newProduct.ProductId);
             
             if (index != -1) //if found index for Product, replace old record with a new one
@@ -77,14 +84,16 @@ namespace ProductManager.Storage
                 _products.Add(new ProductRecord(newProduct.ProductId, newProduct.WarehouseId, newProduct.Name, newProduct.Quantity, newProduct.Price, newProduct.Category, newProduct.Description));
             }
         }
-        public int GetProductsByWarehouseCount(Guid id)
+        public async Task<int> GetProductsByWarehouseCountAsync(Guid id)
         {
+            await Task.Delay(500);
             return _products.Count(product => product.WarehouseId == id);
         }
 
-        public double GetWarehouseTotalCost(Guid id)
+        public async Task<double> GetWarehouseTotalCostAsync(Guid id)
         {
-            var products = GetProductsByWarehouse(id);
+            await Task.Delay(500);
+            var products = await GetProductsByWarehouseAsync(id);
             return products.Sum(p => p.Price *  p.Quantity);
         }
     }

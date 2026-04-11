@@ -8,6 +8,8 @@
 
   <ItemGroup>
     <ProjectReference Include="..\ProductManager.DBModels\ProductManager.DBModels.csproj" />
+	<PackageReference Include="Microsoft.Maui.Essentials" Version="10.0.50" />
+	<PackageReference Include="sqlite-net-pcl" Version="1.9.172" />
   </ItemGroup>
 
 </Project>

@@ -4,12 +4,12 @@ namespace ProductManager.Storage
 {
     public interface IStorageContext
     {
-        IEnumerable<WarehouseDBModel> GetWarehouses();
-        WarehouseDBModel GetWarehouse(Guid warehouseId);
-        IEnumerable<ProductDBModel> GetProductsByWarehouse(Guid warehouseId);
-        ProductDBModel GetProduct(Guid productId);
-        void SaveProduct(ProductDBModel newProduct);
-        int GetProductsByWarehouseCount(Guid warehouseId);
-        double GetWarehouseTotalCost(Guid warehouseId);
+        IAsyncEnumerable<WarehouseDBModel> GetWarehousesAsync();
+        Task<WarehouseDBModel> GetWarehouseAsync(Guid warehouseId);
+        Task<IEnumerable<ProductDBModel>> GetProductsByWarehouseAsync(Guid warehouseId);
+        Task<ProductDBModel> GetProductAsync(Guid productId);
+        Task SaveProductAsync(ProductDBModel newProduct);
+        Task<int> GetProductsByWarehouseCountAsync(Guid warehouseId);
+        Task<double> GetWarehouseTotalCostAsync(Guid warehouseId);
     }
 }
