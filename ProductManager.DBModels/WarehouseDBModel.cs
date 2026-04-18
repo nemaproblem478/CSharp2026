@@ -12,6 +12,7 @@ namespace ProductManager.DBModels
         public string Name { get => _name; set => _name = value; }
         public Location Location { get => _location; set => _location = value; }
 
+        public WarehouseDBModel() { }
         public WarehouseDBModel(string name, Location location) : this(Guid.NewGuid(), name, location)
         {
         }
