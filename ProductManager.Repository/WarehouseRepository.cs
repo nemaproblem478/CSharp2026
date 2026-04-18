@@ -16,21 +16,29 @@ namespace ProductManager.Repository
         {
             _storageContext = storageContext; ;
         }
-        public IEnumerable<WarehouseDBModel> GetWarehouses()
+        public IAsyncEnumerable<WarehouseDBModel> GetWarehousesAsync()
         {
-            return _storageContext.GetWarehouses();
+            return _storageContext.GetWarehousesAsync();
         }
-        public WarehouseDBModel GetWarehouse(Guid warehouseId)
+        public Task<WarehouseDBModel> GetWarehouseAsync(Guid warehouseId)
         {
-            return _storageContext.GetWarehouse(warehouseId);
+            return _storageContext.GetWarehouseAsync(warehouseId);
         }
-        public int GetProductsByWarehouseCount(Guid warehouseId)
+        public Task SaveWarehouseAsync(WarehouseDBModel warehouse)
         {
-            return _storageContext.GetProductsByWarehouseCount(warehouseId);
+            return _storageContext.SaveWarehouseAsync(warehouse);
         }
-        public double GetWarehouseTotalCost(Guid warehouseId)
+        public Task DeleteWarehouseAsync(Guid warehouseId)
         {
-            return _storageContext.GetWarehouseTotalCost(warehouseId);
+            return _storageContext.DeleteWarehouseAsync(warehouseId);
+        }
+        public Task<int> GetProductsByWarehouseCountAsync(Guid warehouseId)
+        {
+            return _storageContext.GetProductsByWarehouseCountAsync(warehouseId);
+        }
+        public Task<double> GetWarehouseTotalCostAsync(Guid warehouseId)
+        {
+            return _storageContext.GetWarehouseTotalCostAsync(warehouseId);
         }
     }
 }

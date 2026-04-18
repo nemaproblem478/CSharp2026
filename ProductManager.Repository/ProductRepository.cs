@@ -17,17 +17,21 @@ namespace ProductManager.Repository
         {
             _storageContext = storageContext;
         }
-        public IEnumerable<ProductDBModel> GetProductsByWarehouse(Guid warehouseId)
+        public Task<IEnumerable<ProductDBModel>> GetProductsByWarehouseAsync(Guid warehouseId)
         {
-            return _storageContext.GetProductsByWarehouse(warehouseId);
+            return _storageContext.GetProductsByWarehouseAsync(warehouseId);
         }
-        public ProductDBModel GetProduct(Guid productId)
+        public Task<ProductDBModel> GetProductAsync(Guid productId)
         {
-            return _storageContext.GetProduct(productId);
+            return _storageContext.GetProductAsync(productId);
         }
-        public void SaveProduct(ProductDBModel product)
+        public Task SaveProductAsync(ProductDBModel product)
         {
-            _storageContext.SaveProduct(product);
+            return _storageContext.SaveProductAsync(product);
+        }
+        public Task DeleteProductAsync(Guid productId)
+        {
+            return _storageContext.DeleteProductAsync(productId);
         }
     }
 }

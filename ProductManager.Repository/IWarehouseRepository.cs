@@ -5,9 +5,11 @@ namespace ProductManager.Repository
 {
     public interface IWarehouseRepository
     {
-        IEnumerable<WarehouseDBModel> GetWarehouses();
-        WarehouseDBModel GetWarehouse(Guid warehouseId);
-        int GetProductsByWarehouseCount(Guid warehouseId);
-        double GetWarehouseTotalCost(Guid warehouseId);
+        IAsyncEnumerable<WarehouseDBModel> GetWarehousesAsync();
+        Task<WarehouseDBModel> GetWarehouseAsync(Guid warehouseId);
+        Task SaveWarehouseAsync(WarehouseDBModel warehouse);
+        Task DeleteWarehouseAsync(Guid warehouseId);
+        Task<int> GetProductsByWarehouseCountAsync(Guid warehouseId);
+        Task<double> GetWarehouseTotalCostAsync(Guid warehouseId);
     }
 }

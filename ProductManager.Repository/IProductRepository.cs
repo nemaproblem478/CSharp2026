@@ -9,8 +9,9 @@ namespace ProductManager.Repository
 {
     public interface IProductRepository
     {
-        IEnumerable<ProductDBModel> GetProductsByWarehouse(Guid warehouseId);
-        ProductDBModel GetProduct(Guid productId);
-        void SaveProduct(ProductDBModel product);
+        Task<IEnumerable<ProductDBModel>> GetProductsByWarehouseAsync(Guid warehouseId);
+        Task<ProductDBModel> GetProductAsync(Guid productId);
+        Task SaveProductAsync(ProductDBModel product);
+        Task DeleteProductAsync(Guid productId);
     }
 }
