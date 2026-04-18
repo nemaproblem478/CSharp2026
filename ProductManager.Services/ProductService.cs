@@ -2,6 +2,12 @@
 using ProductManager.DBModels;
 using ProductManager.DTOModels.Product;
 using ProductManager.Repository;
+using System.Threading.Tasks;
+using System;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.Text;
+
 
 namespace ProductManager.Services
 {
@@ -15,26 +21,39 @@ namespace ProductManager.Services
         }
 
         //Get ProductDetailsDTO model by product id
-        public ProductDetailsDTO GetProduct(Guid id)
+        public async Task<ProductDetailsDTO> GetProductAsync(Guid id)
         {
-            var product = _repository.GetProduct(id);
+            var product = await _repository.GetProductAsync(id);
 
             return product is null ? null : new ProductDetailsDTO(product.ProductId, product.WarehouseId, product.Name, product.Description, product.Category, product.Quantity, product.Price);
         }
         //Get all ProductListDTO models by warehouse id
-        public IEnumerable<ProductListDTO> GetProducts(Guid warehouseId)
+        public async Task<IEnumerable<ProductListDTO>> GetProductsByWarehouseAsync(Guid warehouseId)
         {
-            foreach (var product in _repository.GetProductsByWarehouse(warehouseId))
-            {
-                yield return new ProductListDTO(product.ProductId, product.Name, product.Category, product.Price);
-            }
+            return (await _repository.GetProductsByWarehouseAsync(warehouseId)).Select(product => new ProductListDTO(product.ProductId, product.Name, product.Category, product.Price));
         }
-        //Save Product to storage
-        public void SaveProduct(ProductDetailsDTO productDTO)
+        //Save edited Product to storage
+        public async Task UpdateProductAsync(ProductDetailsDTO productDTO)
         {
+            var errors = productDTO.Validate();
+            if (errors.Count > 0)
+                throw new ValidationException(String.Join(Environment.NewLine, errors.Select(s => s.ErrorMessage)));
             var dbModel = new ProductDBModel(productDTO.ProductId, productDTO.WarehouseId, productDTO.Name, productDTO.Quantity, productDTO.Price, productDTO.Category, productDTO.Description);
 
-            _repository.SaveProduct(dbModel);
+            await _repository.SaveProductAsync(dbModel);
+        }
+        //Save created Product to storage
+        public async Task CreateProductAsync(ProductCreateDTO productDTO)
+        {
+            var errors = productDTO.Validate();
+            if (errors.Count > 0)
+                throw new ValidationException(String.Join(Environment.NewLine, errors.Select(s => s.ErrorMessage)));
+            var dbModel = new ProductDBModel(productDTO.WarehouseId, productDTO.Name, productDTO.Quantity, productDTO.Price, productDTO.Category, productDTO.Description);
+            await _repository.SaveProductAsync(dbModel);
+        }
+        public Task DeleteProductAsync(Guid id)
+        {
+            return _repository.DeleteProductAsync(id);
         }
     }
 }

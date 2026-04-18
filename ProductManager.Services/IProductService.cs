@@ -5,8 +5,10 @@ namespace ProductManager.Services
 {
     public interface IProductService
     {
-        public IEnumerable<ProductListDTO> GetProducts(Guid warehouseId);
-        public ProductDetailsDTO GetProduct(Guid id);
-        public void SaveProduct(ProductDetailsDTO productDetailsDTO);
+        Task<IEnumerable<ProductListDTO>> GetProductsByWarehouseAsync(Guid warehouseId);
+        Task<ProductDetailsDTO> GetProductAsync(Guid id);
+        Task UpdateProductAsync(ProductDetailsDTO productDetailsDTO);
+        Task CreateProductAsync(ProductCreateDTO productCreateDTO);
+        Task DeleteProductAsync(Guid id);
     }
 }

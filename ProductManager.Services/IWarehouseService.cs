@@ -10,7 +10,10 @@ namespace ProductManager.Services
 {
     public interface IWarehouseService
     {
-        public WarehouseDetailsDTO GetWarehouse(Guid id);
-        public IEnumerable<WarehouseListDTO> GetAllWarehouses();
+        Task<WarehouseDetailsDTO> GetWarehouseAsync(Guid id);
+        IAsyncEnumerable<WarehouseListDTO> GetAllWarehousesAsync();
+        Task UpdateWarehouseAsync(WarehouseDetailsDTO warehouseDTO);
+        Task CreateWarehouseAsync(WarehouseCreateDTO warehouseDTO);
+        Task DeleteWarehouseAsync(Guid id);
     }
 }
