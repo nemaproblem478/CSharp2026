@@ -136,5 +136,25 @@ namespace ProductManager.Storage
                 }
             }
         }
+        public async Task SaveWarehouseAsync(WarehouseDBModel warehouse)
+        {
+            await Init();
+            var filePath = WarehouseFilePath(warehouse.Id);
+            await File.WriteAllTextAsync(filePath, JsonSerializer.Serialize(warehouse));
+        }
+        public async Task DeleteWarehouseAsync(Guid warehouseId)
+        {
+            await Init();
+            var filePath = WarehouseFilePath(warehouseId);
+            if (File.Exists(filePath))
+            {
+                File.Delete(filePath);
+            }
+            var directoryPath = WarehouseDirectoryPath(warehouseId);
+            if (Directory.Exists(directoryPath))
+            {
+                Directory.Delete(directoryPath, true);
+            }
+        }
     }
 }

@@ -84,6 +84,30 @@ namespace ProductManager.Storage
                 _products.Add(new ProductRecord(newProduct.ProductId, newProduct.WarehouseId, newProduct.Name, newProduct.Quantity, newProduct.Price, newProduct.Category, newProduct.Description));
             }
         }
+        public async Task DeleteProductAsync(Guid productId)
+        {
+            await Task.Delay(1000);
+            _products.RemoveAll(p => p.Id == productId);
+        }
+        public async Task SaveWarehouseAsync(WarehouseDBModel newWarehouse)
+        {
+            await Task.Delay(1000);
+            int index = _warehouses.FindIndex(w => w.Id == newWarehouse.Id);
+
+            if (index != -1) //if found index for Warehouse, replace old record with a new one
+            {
+                _warehouses[index] = new WarehouseRecord(newWarehouse.Id, newWarehouse.Name, newWarehouse.Location);
+            }
+            else //if not, then add new record to the end of the list
+            {
+                _warehouses.Add(new WarehouseRecord(newWarehouse.Id, newWarehouse.Name, newWarehouse.Location));
+            }
+        }
+        public async Task DeleteWarehouseAsync(Guid warehouseId)
+        {
+            await Task.Delay(1000);
+            _warehouses.RemoveAll(w => w.Id == warehouseId);
+        }
         public async Task<int> GetProductsByWarehouseCountAsync(Guid id)
         {
             await Task.Delay(500);

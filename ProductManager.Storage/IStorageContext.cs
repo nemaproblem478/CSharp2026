@@ -9,6 +9,9 @@ namespace ProductManager.Storage
         Task<IEnumerable<ProductDBModel>> GetProductsByWarehouseAsync(Guid warehouseId);
         Task<ProductDBModel> GetProductAsync(Guid productId);
         Task SaveProductAsync(ProductDBModel newProduct);
+        Task DeleteProductAsync(Guid productId);
+        Task SaveWarehouseAsync(WarehouseDBModel newWarehouse);
+        Task DeleteWarehouseAsync(Guid warehouseId);
         Task<int> GetProductsByWarehouseCountAsync(Guid warehouseId);
         Task<double> GetWarehouseTotalCostAsync(Guid warehouseId);
     }
