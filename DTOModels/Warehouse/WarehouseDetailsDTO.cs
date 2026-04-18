@@ -2,7 +2,7 @@
 
 namespace ProductManager.DTOModels.Warehouse
 {
-    public class WarehouseDetailsDTO
+    public class WarehouseDetailsDTO : IWarehouseValidateDTO
     {
         public Guid Id { get; }
         public string Name { get; }
