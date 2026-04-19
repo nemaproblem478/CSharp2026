@@ -18,20 +18,17 @@ namespace ProductManager.Services
             var errors = new List<ValidationError>();
             if (productCandidate.WarehouseId == Guid.Empty)
                 errors.Add(new ValidationError("Product must be assigned to a warehouse.", nameof(ProductCreateDTO.WarehouseId)));
-            errors.AddRange(ValidateProduct(productCandidate.Name, productCandidate.Description, productCandidate.Category, productCandidate.Quantity, productCandidate.Price));
+            errors.AddRange(ValidateProduct(productCandidate.Name, productCandidate.Description, productCandidate.Category, productCandidate.Quantity.ToString(), productCandidate.Price.ToString()));
             return errors;
         }
-        private static List<ValidationError> ValidateProduct(string name, string description, Category? category, int quantity, double price)
+        public static List<ValidationError> ValidateProduct(string name, string description, Category? category, string quantityText, string priceText)
         {
             var errors = new List<ValidationError>();
-            errors.AddRange(ValidateString(name, nameof(ProductCreateDTO.Name), "Name"));
-            errors.AddRange(ValidateString(description, nameof(ProductCreateDTO.Description), "Description"));
-            errors.AddRange(ValidateString(quantity.ToString(), nameof(ProductCreateDTO.Quantity), "Quantity"));
-            errors.AddRange(ValidateString(price.ToString(), nameof(ProductCreateDTO.Price), "Price"));
-            if (category == null)
-            {
-                errors.Add(new ValidationError("Product category must be selected.", nameof(ProductCreateDTO.Category)));
-            }
+            errors.AddRange(ValidateString(name, nameof(IProductValidateDTO.Name), "Name"));
+            errors.AddRange(ValidateString(description, nameof(IProductValidateDTO.Description), "Description"));
+            errors.AddRange(ValidateString(quantityText, "QuantityText", "Quantity"));
+            errors.AddRange(ValidateString(priceText, "PriceText", "Price"));
+            errors.AddRange(ValidateString(category.GetDisplayName(), nameof(IProductValidateDTO.Category), "Category"));
             return errors;
         }
         public static List<ValidationError> Validate(this IWarehouseValidateDTO warehouseCandidate)
@@ -40,14 +37,11 @@ namespace ProductManager.Services
             errors.AddRange(ValidateWarehouse(warehouseCandidate.Name, warehouseCandidate.Location));
             return errors;
         }
-        private static List<ValidationError> ValidateWarehouse(string name, Location? location)
+        public static List<ValidationError> ValidateWarehouse(string name, Location? location)
         {
             var errors = new List<ValidationError>();
-            errors.AddRange(ValidateString(name, nameof(WarehouseCreateDTO.Name), "Name"));
-            if (location == null)
-            {
-                errors.Add(new ValidationError("Warehouse must be assigned to a location.", nameof(WarehouseCreateDTO.Location)));
-            }
+            errors.AddRange(ValidateString(name, nameof(IWarehouseValidateDTO.Name), "Name"));
+            errors.AddRange(ValidateString(location.GetDisplayName(), nameof(IWarehouseValidateDTO.Location), "Location"));
             return errors;
         }
         private static List<ValidationError> ValidateString(string value, string propertyName, string displayName)
