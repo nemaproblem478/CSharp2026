@@ -22,19 +22,21 @@ namespace ProductManager
                     fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
                 });
 
-            builder.Services.AddSingleton<IStorageContext, InMemoryStorage>();
+            builder.Services.AddSingleton<IStorageContext, FileStorageContext>();
             builder.Services.AddSingleton<IWarehouseRepository, WarehouseRepository>();
             builder.Services.AddSingleton<IProductRepository, ProductRepository>();
             builder.Services.AddSingleton<IWarehouseService, WarehouseService>();
             builder.Services.AddSingleton<IProductService, ProductService>();
 
             builder.Services.AddSingleton<WarehousesPage>();
+            builder.Services.AddTransient<WarehouseEditorPage>();
             builder.Services.AddTransient<WarehouseDetailsPage>();
-            builder.Services.AddTransient<ProductDetailsPage>();
+            builder.Services.AddTransient<ProductEditorPage>();
 
             builder.Services.AddSingleton<WarehousesViewModel>();
+            builder.Services.AddTransient<WarehouseEditorViewModel>();
             builder.Services.AddTransient<WarehouseDetailsViewModel>();
-            builder.Services.AddTransient<ProductDetailsViewModel>();
+            builder.Services.AddTransient<ProductEditorViewModel>();
 #if DEBUG
             builder.Logging.AddDebug();
 #endif
