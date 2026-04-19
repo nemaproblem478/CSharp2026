@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:vms="clr-namespace:ProductManager.Viewmodels"
+             x:Class="ProductManager.Pages.ProductEditorPage"
+             x:DataType="vms:ProductEditorViewModel"
+             Title="{Binding PageTitle}" IsEnabled="{Binding IsNotBusy}">
+    <Grid> 
+        <ScrollView>
+            <VerticalStackLayout
+                Padding="10,20"
+                Spacing="5">
+                <Label
+                    Text="Name"
+                    FontSize="20"
+                />
+                <Entry
+                    Text="{Binding Name}"
+                    FontSize="20"
+                    Placeholder="Enter Name"
+                />
+                <Label 
+                    Text="{Binding Errors[Name]}" 
+                    TextColor="Red" 
+                    IsVisible="{Binding Errors[Name], Converter={StaticResource StringToBoolConverter}}" />
+                <Label
+                    Text="Description"
+                    FontSize="20"
+                />
+                <Entry
+                    Text="{Binding Description}"
+                    Placeholder="Enter Description"
+                    FontSize="20"
+                />
+                <Label 
+                    Text="{Binding Errors[Description]}" 
+                    TextColor="Red" 
+                    IsVisible="{Binding Errors[Description], Converter={StaticResource StringToBoolConverter}}" />
+                <Label
+                    Text="Category"
+                    FontSize="20"
+                />
+                <Picker 
+                    FontSize="20"
+                    VerticalOptions="Start"
+                    ItemsSource="{Binding Categories}"
+                    ItemDisplayBinding="{Binding DisplayName}"
+                    SelectedItem="{Binding SelectedCategory}"
+                />
+                <Label 
+                    Text="{Binding Errors[Category]}" 
+                    TextColor="Red" 
+                    IsVisible="{Binding Errors[Category], Converter={StaticResource StringToBoolConverter}}" />
+                <Label
+                    Text="Quantity"
+                    FontSize="20"
+                />
+                <Entry
+                    Text="{Binding QuantityText}"
+                    Placeholder="Enter Quantity"
+                    FontSize="20"
+                    Keyboard="Numeric"
+                />
+                <Label 
+                    Text="{Binding Errors[QuantityText]}" 
+                    TextColor="Red" 
+                    IsVisible="{Binding Errors[QuantityText], Converter={StaticResource StringToBoolConverter}}" />
+                <Label
+                    Text="Price"
+                    FontSize="20"
+                />
+                <Entry
+                    Text="{Binding PriceText}"
+                    Placeholder="Enter Price"
+                    FontSize="20"
+                    Keyboard="Numeric"
+                />
+                <Label 
+                    Text="{Binding Errors[PriceText]}" 
+                    TextColor="Red" 
+                    IsVisible="{Binding Errors[PriceText], Converter={StaticResource StringToBoolConverter}}" />
+                <Label
+                    Text="Total Cost"
+                    FontSize="20"
+                />
+                <Entry
+                    Text="{Binding TotalCost,Mode=OneWay}"
+                    FontSize="20"
+                    IsReadOnly="True"
+                />
+                <Button
+                    Text="Save"
+                    TextColor="White"
+                    FontSize="Title"
+                    BackgroundColor="BlueViolet"
+                    Margin="0,10"
+                    Command="{Binding SaveClickedCommand}"
+                />
+            </VerticalStackLayout>
+        </ScrollView>
+        <BoxView
+            IsVisible="{Binding IsBusy}"
+            BackgroundColor="Gray"
+            Opacity="0.2"
+            InputTransparent="False"/>
+        <ActivityIndicator
+            Color="Magenta"
+            IsRunning="{Binding IsBusy}"
+            IsVisible="{Binding IsBusy}"
+            VerticalOptions="Center"
+            HorizontalOptions="Center"/>
+    </Grid>
+</ContentPage>

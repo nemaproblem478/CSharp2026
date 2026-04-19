@@ -3,9 +3,15 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:models="clr-namespace:ProductManager.DTOModels.Product;assembly=ProductManager.DTOModels"
              xmlns:vms="clr-namespace:ProductManager.Viewmodels"
+             xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
              x:Class="ProductManager.Pages.WarehouseDetailsPage"
              x:DataType="vms:WarehouseDetailsViewModel"
-             Title="Warehouse Details">
+             Title="Warehouse Details" IsEnabled="{Binding IsNotBusy}">
+    <ContentPage.Behaviors>
+        <toolkit:EventToCommandBehavior
+            EventName="Appearing"
+            Command="{Binding RefreshDataCommand}" />
+    </ContentPage.Behaviors>
     <Grid RowDefinitions="Auto,5*,Auto">
         <Border 
             Grid.Row="0"
@@ -47,9 +53,19 @@
                 <CollectionView.ItemTemplate>
                     <DataTemplate
                         x:DataType="models:ProductListDTO">
-                        <Border
-                            Padding="10"
-                            >
+                        <SwipeView>
+                            <SwipeView.RightItems>
+                                <SwipeItems
+                                    Mode="Reveal">
+                                    <SwipeItem
+                                        Text="Delete"
+                                        BackgroundColor="Red"
+                                        Command="{Binding Source={RelativeSource AncestorType={x:Type vms:WarehouseDetailsViewModel}}, Path=DeleteProductCommand}" 
+                                        CommandParameter="{Binding .}"/>
+                                </SwipeItems>
+                            </SwipeView.RightItems>
+                            <Border
+                                Padding="10">
                             <Border.GestureRecognizers>
                                 <TapGestureRecognizer
                                     Command="{Binding Source={RelativeSource AncestorType={x:Type vms:WarehouseDetailsViewModel}}, Path=LoadProductCommand}"
@@ -71,7 +87,8 @@
                                     </Label.Text>
                                 </Label>
                             </VerticalStackLayout>
-                        </Border>
+                            </Border>
+                        </SwipeView>
                     </DataTemplate>
                 </CollectionView.ItemTemplate>
             </CollectionView>
@@ -92,5 +109,18 @@
                 Style="{StaticResource SubHeadline}"
                 />
         </Border>
+        <BoxView
+            Grid.RowSpan="3"
+            IsVisible="{Binding IsBusy}"
+            BackgroundColor="Gray"
+            Opacity="0.2"
+            InputTransparent="False"/>
+        <ActivityIndicator
+            Grid.RowSpan="3"
+            Color="Magenta"
+            IsRunning="{Binding IsBusy}"
+            IsVisible="{Binding IsBusy}"
+            VerticalOptions="Center"
+            HorizontalOptions="Center"/>
     </Grid>
 </ContentPage>

@@ -6,9 +6,15 @@ namespace ProductManager.Pages;
 
 public partial class WarehousesPage : ContentPage
 {
-	public WarehousesPage(WarehousesViewModel vm)
+    private readonly WarehousesViewModel _viewModel;
+    public WarehousesPage(WarehousesViewModel vm)
 	{
         InitializeComponent();
-        BindingContext = vm;
+        BindingContext = _viewModel = vm;
 	}
+
+    //override protected async void OnAppearing()
+    //{
+    //    await _viewModel.RefreshData();
+    //}
 }

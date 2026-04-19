@@ -7,41 +7,104 @@
              xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
              x:Class="ProductManager.Pages.WarehousesPage"
              x:DataType="vms:WarehousesViewModel"
-             x:Name="Page"
-             Title="Warehouses">
+             x:Name="RootPage"
+             Title="Warehouses" IsEnabled="{Binding IsNotBusy}">
     <ContentPage.Behaviors>
         <toolkit:EventToCommandBehavior
-            EventName="Appearing"
-            Command="{Binding BindingContext.LoadDataCommand, Source={x:Reference Page}}" />
+        EventName="Appearing"
+        Command="{Binding BindingContext.RefreshDataCommand, Source={x:Reference RootPage}}" />
     </ContentPage.Behaviors>
-    <CollectionView
-        x:Name="warehouseCollectionView"
-        ItemsSource="{Binding Path=Warehouses}"
-        Margin="10"
-        SelectionMode="None">
-        <CollectionView.ItemTemplate>
-            <DataTemplate
-                x:DataType="models:WarehouseListDTO">
-                <Border
-                    Stroke="BlueViolet"
-                    Padding="10"
-                    Margin="0,10">
-                <Border.GestureRecognizers>
-                    <TapGestureRecognizer
-                        Command="{Binding Source={RelativeSource AncestorType={x:Type vms:WarehousesViewModel}}, Path=LoadWarehouseCommand}"
-                        CommandParameter="{Binding Id}"/>
-                </Border.GestureRecognizers>
-                <VerticalStackLayout>
-                    <Label
-                        Style="{StaticResource SubHeadline}"
-                        Text="{Binding Name}"/>
-                    <Label
-                        Text="{Binding TotalCost, StringFormat='Total: ${0}'}"
-                        HorizontalOptions="Center"
-                        />
-                </VerticalStackLayout>
-                </Border>
-            </DataTemplate>
-        </CollectionView.ItemTemplate>
-    </CollectionView>
+    <Grid RowDefinitions="6*, Auto">
+        <CollectionView
+            Grid.Row="0"
+            ItemsSource="{Binding Path=Warehouses}"
+            Margin="10"
+            SelectionMode="None">
+            <CollectionView.ItemTemplate>
+                <DataTemplate
+                    x:DataType="models:WarehouseListDTO">
+                    
+                    <SwipeView>
+                        <SwipeView.RightItems>
+                            <SwipeItems
+                                Mode="Reveal">
+                                <SwipeItem
+                                    Text="Delete"
+                                    BackgroundColor="Red"
+                                    Command="{Binding Source={RelativeSource AncestorType={x:Type vms:WarehousesViewModel}}, Path=DeleteWarehouseCommand}" 
+                                    CommandParameter="{Binding .}"/>
+                            </SwipeItems>
+                        </SwipeView.RightItems>
+                        <SwipeView.LeftItems>
+                            <SwipeItems
+                                Mode="Reveal">
+                                <SwipeItem                                    
+                                    Text="Edit"
+                                    BackgroundColor="Blue"
+                                    Command="{Binding Source={RelativeSource AncestorType={x:Type vms:WarehousesViewModel}}, Path=EditWarehouseCommand}"
+                                    CommandParameter="{Binding Id}"/>
+                            </SwipeItems>
+                        </SwipeView.LeftItems>
+                        <Border
+                            Stroke="BlueViolet"
+                            Padding="10"
+                            Margin="0,10">
+                            
+                            <Border.GestureRecognizers>
+                                <TapGestureRecognizer
+                                Command="{Binding Source={RelativeSource AncestorType={x:Type vms:WarehousesViewModel}}, Path=LoadWarehouseCommand}"
+                                CommandParameter="{Binding Id}"/>
+                            </Border.GestureRecognizers>
+                            <FlyoutBase.ContextFlyout>
+                                <MenuFlyout>
+                                    <MenuFlyoutItem Text="Edit" 
+                                        Command="{Binding EditWarehouseCommand, Source={RelativeSource AncestorType={x:Type vms:WarehousesViewModel}}}"
+                                        CommandParameter="{Binding Id}" />       
+                                    <MenuFlyoutItem Text="Delete" 
+                                        Command="{Binding DeleteWarehouseCommand, Source={RelativeSource AncestorType={x:Type vms:WarehousesViewModel}}}"
+                                        CommandParameter="{Binding .}" />
+                                </MenuFlyout>
+                            </FlyoutBase.ContextFlyout>
+                            <VerticalStackLayout>
+                                <Label
+                                    Style="{StaticResource SubHeadline}"
+                                    Text="{Binding Name}"/>
+                                <Label
+                                    Text="{Binding TotalCost, StringFormat='Total: ${0}'}"
+                                    HorizontalOptions="Center"
+                                    />
+                            </VerticalStackLayout>
+                        </Border>
+                    </SwipeView>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+        <Border
+            Grid.Row="1"
+            Padding="10"
+            BackgroundColor="BlueViolet"
+            StrokeThickness="5"
+            Stroke="BlueViolet">
+            <Border.GestureRecognizers>
+                <TapGestureRecognizer
+                    Command="{Binding Source={RelativeSource AncestorType={x:Type vms:WarehousesViewModel}}, Path=CreateClickedCommand}"/>
+            </Border.GestureRecognizers>
+            <Label
+                Text="Add Warehouse"
+                TextColor="White"
+                Style="{StaticResource SubHeadline}"
+            />
+        </Border>
+        <BoxView
+            IsVisible="{Binding IsBusy}"
+            BackgroundColor="Gray"
+            Opacity="0.2"
+            InputTransparent="False"/>
+        <ActivityIndicator
+            Color="Magenta"
+            IsRunning="{Binding IsBusy}"
+            IsVisible="{Binding IsBusy}"
+            VerticalOptions="Center"
+            HorizontalOptions="Center"/>
+    </Grid>
 </ContentPage>

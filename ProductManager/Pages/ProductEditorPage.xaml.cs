@@ -5,9 +5,9 @@ using System.Globalization;
 using System.Text.RegularExpressions;
 
 namespace ProductManager.Pages;
-public partial class ProductDetailsPage : ContentPage
+public partial class ProductEditorPage : ContentPage
 {
-	public ProductDetailsPage(ProductDetailsViewModel vms)
+	public ProductEditorPage(ProductEditorViewModel vms)
 	{
 		InitializeComponent();
         BindingContext = vms;
