@@ -11,7 +11,7 @@ namespace ProductManager.Storage
 {
     public class InMemoryStorageContext : IStorageContext
     {
-        private record class WarehouseRecord(Guid Id, string Name, Location Location);
+        private record class WarehouseRecord(Guid Id, string Name, CommonComponents.Location Location);
         private record class ProductRecord(Guid Id, Guid WarehouseId, string Name, int Quantity, double Price, Category Category, string Description);
 
         private static readonly List<WarehouseRecord> _warehouses = new List<WarehouseRecord>();
@@ -20,9 +20,9 @@ namespace ProductManager.Storage
         static InMemoryStorageContext()
         {
             //Initializing storage
-            var warehouseLypky = new WarehouseRecord(Guid.NewGuid(), "Lypky", Location.Kyiv);
-            var warehouseTritone = new WarehouseRecord(Guid.NewGuid(), "Tritone", Location.Khmelnytsky);
-            var warehouseZahid = new WarehouseRecord(Guid.NewGuid(), "Zahid", Location.Lviv);
+            var warehouseLypky = new WarehouseRecord(Guid.NewGuid(), "Lypky", CommonComponents.Location.Kyiv);
+            var warehouseTritone = new WarehouseRecord(Guid.NewGuid(), "Tritone", CommonComponents.Location.Khmelnytsky);
+            var warehouseZahid = new WarehouseRecord(Guid.NewGuid(), "Zahid", CommonComponents.Location.Lviv);
             _warehouses.Add(warehouseLypky);
             _warehouses.Add(warehouseTritone);
             _warehouses.Add(warehouseZahid);
