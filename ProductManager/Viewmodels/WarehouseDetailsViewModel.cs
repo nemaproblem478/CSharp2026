@@ -5,18 +5,24 @@ using ProductManager.DTOModels.Warehouse;
 using ProductManager.Pages;
 using ProductManager.Services;
 using System.Collections.ObjectModel;
+using System.Threading.Tasks;
 
 namespace ProductManager.Viewmodels
 {
-    public partial class WarehouseDetailsViewModel : ObservableObject, IQueryAttributable
+    public partial class WarehouseDetailsViewModel : BaseViewModel, IQueryAttributable
     {
         private readonly IWarehouseService _warehouseService;
         private readonly IProductService _productService;
+
+        private Task<WarehouseDetailsDTO> _detailsTask;
+        private Task<IEnumerable<ProductListDTO>> _productsTask;
 
         [ObservableProperty]
         private WarehouseDetailsDTO _currentWarehouse;
         [ObservableProperty]
         private ObservableCollection<ProductListDTO> _products;
+
+        private Guid _warehouseId;
 
         public WarehouseDetailsViewModel(IWarehouseService warehouseService, IProductService productService)
         {
@@ -26,23 +32,115 @@ namespace ProductManager.Viewmodels
 
         public void ApplyQueryAttributes(IDictionary<string, object> query)
         {
-            var warehouseId = (Guid)query["WarehouseId"];
-            CurrentWarehouse = _warehouseService.GetWarehouse(warehouseId);
-            Products = new ObservableCollection<ProductListDTO>(_productService.GetProducts(warehouseId));
+            _warehouseId = (Guid)query["WarehouseId"];
+
+            _detailsTask = _warehouseService.GetWarehouseAsync(_warehouseId);
+            _productsTask = _productService.GetProductsByWarehouseAsync(_warehouseId);
+
+            InitializeDataAsync();
+        }
+
+        //Initialize data
+        private async void InitializeDataAsync()
+        {
+            IsBusy = true;
+            try
+            {
+                CurrentWarehouse = await _detailsTask ?? throw new Exception("Warehouse does not exist.");
+                Products = new ObservableCollection<ProductListDTO>(await _productsTask);
+            }
+            catch (Exception ex)
+            {
+                await Shell.Current.DisplayAlert("Error", $"Failed to load data: {ex.Message}", "Ok");
+            }
+            finally
+            {
+                IsBusy = false;
+            }
+        }
+
+        [RelayCommand]
+        internal async Task RefreshData()
+        {
+            IsBusy = true;
+            try
+            {
+                CurrentWarehouse = await _warehouseService.GetWarehouseAsync(_warehouseId) ?? throw new Exception("Warehouse does not exist.");
+
+                var freshProducts = await _productService.GetProductsByWarehouseAsync(_warehouseId);
+
+                Products.Clear();
+                foreach (var product in freshProducts)
+                {
+                    Products.Add(product);
+                }
+            }
+            catch (Exception ex)
+            {
+                await Shell.Current.DisplayAlert("Error", $"Failed to refresh: {ex.Message}", "Ok");
+            }
+            finally
+            {
+                IsBusy = false;
+            }
         }
 
         //Choosing a Product from WarehouseDetailsPage
         [RelayCommand]
-        private void LoadProduct(Guid productId)
+        private async Task LoadProduct(Guid productId)
         {
-            Shell.Current.GoToAsync($"{nameof(ProductDetailsPage)}", new Dictionary<string, object> { { "ProductId", productId } });
+            IsBusy = true;
+            try
+            {
+                await Shell.Current.GoToAsync($"{nameof(ProductEditorPage)}", new Dictionary<string, object> { { "ProductId", productId } });
+            }
+            catch (Exception ex)
+            {
+                await Shell.Current.DisplayAlert("Error", $"Failed to navigate to product details: {ex.Message}", "Ok");
+            }
+            finally
+            {
+                IsBusy = false;
+            }
+        }
+
+        [RelayCommand]
+        private async Task DeleteProduct(ProductListDTO product)
+        {
+            IsBusy = true;
+            try
+            {
+                if (await Shell.Current.DisplayAlert("Confirm", "Are you sure you want to delete this product?", "Yes", "No"))
+                    await _productService.DeleteProductAsync(product.Id);
+                Products.Remove(product);
+            }
+            catch (Exception ex)
+            {
+                await Shell.Current.DisplayAlert("Error", $"Failed to navigate to product details: {ex.Message}", "Ok");
+            }
+            finally
+            {
+                IsBusy = false;
+            }
         }
 
         //Add Product
         [RelayCommand]
-        private void CreateClicked()
+        private async Task CreateClicked()
         {
-            Shell.Current.GoToAsync($"{nameof(ProductDetailsPage)}", new Dictionary<string, object> { { "WarehouseId", CurrentWarehouse.Id } });
+            IsBusy = true;
+            try
+            {
+                await Shell.Current.GoToAsync($"{nameof(ProductEditorPage)}", new Dictionary<string, object> { { "WarehouseId", CurrentWarehouse.Id } });
+            }
+            catch (Exception ex)
+            {
+                await Shell.Current.DisplayAlert("Error", $"Failed to navigate to product create page: {ex.Message}", "Ok");
+            }
+            finally
+            {
+                IsBusy = false;
+            }
         }
     }
 }
