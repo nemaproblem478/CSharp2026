@@ -15,6 +15,9 @@ namespace ProductManager.CommonComponents
         //Get display name by Enum value
         public static string GetDisplayName(this Enum value)
         {
+            if (value == null)
+                return String.Empty;
+
             var type = value.GetType();
             var name = Enum.GetName(type, value);
 
