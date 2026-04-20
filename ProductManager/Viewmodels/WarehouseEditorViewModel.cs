@@ -1,8 +1,11 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using CommunityToolkit.Mvvm.Messaging;
 using ProductManager.CommonComponents;
-using ProductManager.DTOModels.Product;
 using ProductManager.DTOModels;
+using ProductManager.DTOModels.Product;
+using ProductManager.DTOModels.Warehouse;
+using ProductManager.Messages;
 using ProductManager.Repository;
 using ProductManager.Services;
 using System;
@@ -10,7 +13,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using ProductManager.DTOModels.Warehouse;
 
 namespace ProductManager.Viewmodels
 {

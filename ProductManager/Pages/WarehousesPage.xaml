@@ -14,10 +14,11 @@
         EventName="Appearing"
         Command="{Binding BindingContext.RefreshDataCommand, Source={x:Reference RootPage}}" />
     </ContentPage.Behaviors>
-    <Grid RowDefinitions="6*, Auto">
+    <Grid RowDefinitions="5*, Auto">
+
         <CollectionView
             Grid.Row="0"
-            ItemsSource="{Binding Path=Warehouses}"
+            ItemsSource="{Binding Path=VisibleWarehouses}"
             Margin="10"
             SelectionMode="None">
             <CollectionView.ItemTemplate>
@@ -101,7 +102,7 @@
             Opacity="0.2"
             InputTransparent="False"/>
         <ActivityIndicator
-            Color="Magenta"
+            Color="BlueViolet"
             IsRunning="{Binding IsBusy}"
             IsVisible="{Binding IsBusy}"
             VerticalOptions="Center"
