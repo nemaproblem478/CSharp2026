@@ -71,7 +71,14 @@
                                     Command="{Binding Source={RelativeSource AncestorType={x:Type vms:WarehouseDetailsViewModel}}, Path=LoadProductCommand}"
                                     CommandParameter="{Binding Id}"/>
                             </Border.GestureRecognizers>
-                            <VerticalStackLayout>
+                                <FlyoutBase.ContextFlyout>
+                                    <MenuFlyout>
+                                        <MenuFlyoutItem Text="Delete" 
+                                            Command="{Binding DeleteProductCommand, Source={RelativeSource AncestorType={x:Type vms:WarehouseDetailsViewModel}}}"
+                                            CommandParameter="{Binding .}"/>
+                                    </MenuFlyout>
+                                </FlyoutBase.ContextFlyout>
+                                <VerticalStackLayout>
                                 <Label
                                     Style="{StaticResource SubHeadline}"
                                     Text="{Binding Name}"
