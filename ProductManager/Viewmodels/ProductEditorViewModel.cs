@@ -1,7 +1,9 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using CommunityToolkit.Mvvm.Messaging;
 using ProductManager.CommonComponents;
 using ProductManager.DTOModels.Product;
+using ProductManager.Messages;
 using ProductManager.Services;
 using System;
 using System.Collections.Generic;
@@ -150,12 +152,14 @@ namespace ProductManager.Viewmodels
                 {
                     var edittedProduct = new ProductDetailsDTO(_productId, _warehouseId, Name, Description, SelectedCategory.Value, QuantityInt, PriceDouble);
                     await _productService.UpdateProductAsync(edittedProduct);
+                    WeakReferenceMessenger.Default.Send(new RefreshProductsMessage());
                     await Shell.Current.GoToAsync("..");
                 }
                 else 
                 {
                     var newProduct = new ProductCreateDTO(_warehouseId, Name, Description, SelectedCategory.Value, QuantityInt, PriceDouble);
                     await _productService.CreateProductAsync(newProduct);
+                    WeakReferenceMessenger.Default.Send(new RefreshProductsMessage());
                     await Shell.Current.GoToAsync("..");
                 }
             }

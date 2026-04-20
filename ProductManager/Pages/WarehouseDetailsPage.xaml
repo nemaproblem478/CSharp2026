@@ -12,7 +12,7 @@
             EventName="Appearing"
             Command="{Binding RefreshDataCommand}" />
     </ContentPage.Behaviors>
-    <Grid RowDefinitions="Auto,5*,Auto">
+    <Grid RowDefinitions="Auto,Auto,5*,Auto">
         <Border 
             Grid.Row="0"
             Padding="10" 
@@ -42,12 +42,30 @@
                 </Label>
             </VerticalStackLayout>
         </Border>
+        <Border Grid.Row="1"
+                StrokeThickness="0">
+            <Grid ColumnDefinitions="*, *">
+                <SearchBar Grid.Column="0"
+                    Margin="5"
+                           Text="{Binding SearchQuery}"
+                    Placeholder="Enter Warehouse Name..."
+                    CancelButtonColor="BlueViolet"/>
+
+                <HorizontalStackLayout Grid.Column="1" Margin="5" Spacing="10" VerticalOptions="Center" HorizontalOptions="Center">
+                    <Label Text="Sort By:"  TextColor="White"
+                           VerticalOptions="Center" HorizontalOptions="Center"/>
+                    <Picker ItemsSource="{Binding SortOptions}"
+                        SelectedItem="{Binding SelectedSortOption}"
+                        VerticalOptions="Center" HorizontalOptions="Center"/>
+                </HorizontalStackLayout>
+            </Grid>
+        </Border>
         <Border
-            Grid.Row="1"
+            Grid.Row="2"
             Padding="0"
             Margin="0,0">
             <CollectionView
-                ItemsSource="{Binding Products}"
+                ItemsSource="{Binding VisibleProducts}"
                 SelectionMode="None"
                 >
                 <CollectionView.ItemTemplate>
@@ -101,7 +119,7 @@
             </CollectionView>
         </Border>
         <Border
-            Grid.Row="2"
+            Grid.Row="3"
             Padding="10"
             BackgroundColor="BlueViolet"
             StrokeThickness="5"
@@ -124,7 +142,7 @@
             InputTransparent="False"/>
         <ActivityIndicator
             Grid.RowSpan="3"
-            Color="Magenta"
+            Color="BlueViolet"
             IsRunning="{Binding IsBusy}"
             IsVisible="{Binding IsBusy}"
             VerticalOptions="Center"
