@@ -21,7 +21,7 @@ namespace ProductManager.Services
         }
 
         //Get ProductDetailsDTO model by product id
-        public async Task<ProductDetailsDTO> GetProductAsync(Guid id)
+        public async Task<ProductDetailsDTO?> GetProductAsync(Guid id)
         {
             var product = await _repository.GetProductAsync(id);
 

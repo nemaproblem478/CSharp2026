@@ -13,7 +13,7 @@ namespace ProductManager.CommonComponents
     public static class EnumExtension
     {
         //Get display name by Enum value
-        public static string GetDisplayName(this Enum value)
+        public static string GetDisplayName(this Enum? value)
         {
             if (value == null)
                 return String.Empty;

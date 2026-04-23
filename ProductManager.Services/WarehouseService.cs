@@ -15,7 +15,7 @@ namespace ProductManager.Services
             _repository = repository;
         }
         //Get WarehouseDetailsDTO model by warehouse id
-        public async Task<WarehouseDetailsDTO> GetWarehouseAsync(Guid id)
+        public async Task<WarehouseDetailsDTO?> GetWarehouseAsync(Guid id)
         {
             var warehouse = await _repository.GetWarehouseAsync(id);
             return warehouse is null ? null : new WarehouseDetailsDTO(warehouse.Id, warehouse.Name, warehouse.Location, await _repository.GetWarehouseTotalCostAsync(warehouse.Id), await _repository.GetProductsByWarehouseCountAsync(warehouse.Id));
