@@ -12,19 +12,35 @@
     <ContentPage.Behaviors>
         <toolkit:EventToCommandBehavior
         EventName="Appearing"
-        Command="{Binding BindingContext.RefreshDataCommand, Source={x:Reference RootPage}}" />
+        Command="{Binding BindingContext.RefreshDataCommand, Source={x:Reference RootPage}}"/>
     </ContentPage.Behaviors>
-    <Grid RowDefinitions="5*, Auto">
+    <Grid RowDefinitions="Auto, 5*, Auto">
+        <Border Grid.Row="0"
+        StrokeThickness="0">
+            <Grid ColumnDefinitions="*, *">
+                <SearchBar Grid.Column="0"
+                    Margin="5"
+                    Text="{Binding SearchQuery}"
+                    Placeholder="Enter Warehouse Name..."
+                    CancelButtonColor="BlueViolet"/>
 
+                <HorizontalStackLayout Grid.Column="1" Margin="5" Spacing="10" VerticalOptions="Center" HorizontalOptions="Center">
+                    <Label Text="Sort By:"  TextColor="White"
+                           VerticalOptions="Center" HorizontalOptions="Center"/>
+                    <Picker ItemsSource="{Binding SortOptions}"
+                            SelectedItem="{Binding SelectedSortOption}"
+                            VerticalOptions="Center" HorizontalOptions="Center"/>
+                </HorizontalStackLayout>
+            </Grid>
+        </Border>
         <CollectionView
-            Grid.Row="0"
+            Grid.Row="1"
             ItemsSource="{Binding Path=VisibleWarehouses}"
             Margin="10"
             SelectionMode="None">
             <CollectionView.ItemTemplate>
                 <DataTemplate
                     x:DataType="models:WarehouseListDTO">
-                    
                     <SwipeView>
                         <SwipeView.RightItems>
                             <SwipeItems
@@ -32,7 +48,7 @@
                                 <SwipeItem
                                     Text="Delete"
                                     BackgroundColor="Red"
-                                    Command="{Binding Source={RelativeSource AncestorType={x:Type vms:WarehousesViewModel}}, Path=DeleteWarehouseCommand}" 
+                                    Command="{Binding DeleteWarehouseCommand, Source={RelativeSource AncestorType={x:Type vms:WarehousesViewModel}}}" 
                                     CommandParameter="{Binding .}"/>
                             </SwipeItems>
                         </SwipeView.RightItems>
@@ -42,7 +58,7 @@
                                 <SwipeItem                                    
                                     Text="Edit"
                                     BackgroundColor="Blue"
-                                    Command="{Binding Source={RelativeSource AncestorType={x:Type vms:WarehousesViewModel}}, Path=EditWarehouseCommand}"
+                                    Command="{Binding EditWarehouseCommand, Source={RelativeSource AncestorType={x:Type vms:WarehousesViewModel}}}"
                                     CommandParameter="{Binding Id}"/>
                             </SwipeItems>
                         </SwipeView.LeftItems>
@@ -53,17 +69,17 @@
                             
                             <Border.GestureRecognizers>
                                 <TapGestureRecognizer
-                                Command="{Binding Source={RelativeSource AncestorType={x:Type vms:WarehousesViewModel}}, Path=LoadWarehouseCommand}"
+                                Command="{Binding LoadWarehouseCommand, Source={RelativeSource AncestorType={x:Type vms:WarehousesViewModel}}}"
                                 CommandParameter="{Binding Id}"/>
                             </Border.GestureRecognizers>
                             <FlyoutBase.ContextFlyout>
                                 <MenuFlyout>
                                     <MenuFlyoutItem Text="Edit" 
                                         Command="{Binding EditWarehouseCommand, Source={RelativeSource AncestorType={x:Type vms:WarehousesViewModel}}}"
-                                        CommandParameter="{Binding Id}" />       
+                                        CommandParameter="{Binding Id}"/>       
                                     <MenuFlyoutItem Text="Delete" 
                                         Command="{Binding DeleteWarehouseCommand, Source={RelativeSource AncestorType={x:Type vms:WarehousesViewModel}}}"
-                                        CommandParameter="{Binding .}" />
+                                        CommandParameter="{Binding .}"/>
                                 </MenuFlyout>
                             </FlyoutBase.ContextFlyout>
                             <VerticalStackLayout>
@@ -81,14 +97,14 @@
             </CollectionView.ItemTemplate>
         </CollectionView>
         <Border
-            Grid.Row="1"
+            Grid.Row="2"
             Padding="10"
             BackgroundColor="BlueViolet"
             StrokeThickness="5"
             Stroke="BlueViolet">
             <Border.GestureRecognizers>
                 <TapGestureRecognizer
-                    Command="{Binding Source={RelativeSource AncestorType={x:Type vms:WarehousesViewModel}}, Path=CreateClickedCommand}"/>
+                    Command="{Binding CreateClickedCommand}"/>
             </Border.GestureRecognizers>
             <Label
                 Text="Add Warehouse"
