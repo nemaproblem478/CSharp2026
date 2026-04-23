@@ -4,7 +4,7 @@ namespace ProductManager.Storage
 {
     public interface IStorageContext
     {
-        IAsyncEnumerable<WarehouseDBModel?> GetWarehousesAsync();
+        IAsyncEnumerable<WarehouseDBModel> GetWarehousesAsync();
         Task<WarehouseDBModel?> GetWarehouseAsync(Guid warehouseId);
         Task<IEnumerable<ProductDBModel>> GetProductsByWarehouseAsync(Guid warehouseId);
         Task<ProductDBModel?> GetProductAsync(Guid productId);

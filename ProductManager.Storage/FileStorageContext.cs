@@ -58,13 +58,17 @@ namespace ProductManager.Storage
             return JsonSerializer.Deserialize<WarehouseDBModel>(json);
         }
 
-        public async IAsyncEnumerable<WarehouseDBModel?> GetWarehousesAsync()
+        public async IAsyncEnumerable<WarehouseDBModel> GetWarehousesAsync()
         {
             await Init();
             foreach (var file in Directory.GetFiles(DatabasePath, "*.json"))
             {
                 var json = await File.ReadAllTextAsync(file);
-                yield return JsonSerializer.Deserialize<WarehouseDBModel>(json);
+                var product = JsonSerializer.Deserialize<WarehouseDBModel>(json);
+                if (product != null)
+                {
+                    yield return product;
+                }
             }
         }
 
