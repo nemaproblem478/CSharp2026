@@ -6,11 +6,12 @@
              xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
              x:Class="ProductManager.Pages.WarehouseDetailsPage"
              x:DataType="vms:WarehouseDetailsViewModel"
+             x:Name="DetailsPage"
              Title="Warehouse Details" IsEnabled="{Binding IsNotBusy}">
     <ContentPage.Behaviors>
         <toolkit:EventToCommandBehavior
             EventName="Appearing"
-            Command="{Binding RefreshDataCommand}" />
+            Command="{Binding BindingContext.RefreshDataCommand, Source={x:Reference DetailsPage}}" />
     </ContentPage.Behaviors>
     <Grid RowDefinitions="Auto,Auto,5*,Auto">
         <Border 
@@ -47,7 +48,7 @@
             <Grid ColumnDefinitions="*, *">
                 <SearchBar Grid.Column="0"
                     Margin="5"
-                           Text="{Binding SearchQuery}"
+                    Text="{Binding SearchQuery}"
                     Placeholder="Enter Warehouse Name..."
                     CancelButtonColor="BlueViolet"/>
 
