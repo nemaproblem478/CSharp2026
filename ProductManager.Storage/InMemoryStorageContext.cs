@@ -50,7 +50,7 @@ namespace ProductManager.Storage
                 yield return new WarehouseDBModel(warehouse.Id, warehouse.Name, warehouse.Location);
             }
         }
-        public async Task<WarehouseDBModel> GetWarehouseAsync(Guid warehouseId)
+        public async Task<WarehouseDBModel?> GetWarehouseAsync(Guid warehouseId)
         {
             await Task.Delay(1000);
             var warehouse = _warehouses.FirstOrDefault(warehouse => warehouse.Id == warehouseId);
@@ -62,7 +62,7 @@ namespace ProductManager.Storage
             await Task.Delay(1000);
             return _products.Where(product => product.WarehouseId == warehouseId).Select(product => new ProductDBModel(product.Id, product.WarehouseId, product.Name, product.Quantity, product.Price, product.Category, product.Description));
         }
-        public async Task<ProductDBModel> GetProductAsync(Guid productId)
+        public async Task<ProductDBModel?> GetProductAsync(Guid productId)
         {
             await Task.Delay(1000);
             var product = _products.FirstOrDefault(product => product.Id == productId);

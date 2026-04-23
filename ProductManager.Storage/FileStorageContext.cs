@@ -9,30 +9,30 @@ namespace ProductManager.Storage
     {
         private static readonly string DatabasePath = Path.Combine(FileSystem.AppDataDirectory, "File storage");
 
-        private string WarehouseFilePath(Guid warehouseId)
+        private static string WarehouseFilePath(Guid warehouseId)
         {
             return Path.Combine(DatabasePath, warehouseId.ToString() + ".json");
         }
-        private string WarehouseDirectoryPath(Guid warehouseId)
+        private static string WarehouseDirectoryPath(Guid warehouseId)
         {
             return Path.Combine(DatabasePath, warehouseId.ToString());
         }
-        private string ProductFilePath(Guid warehouseId, Guid productId)
+        private static string ProductFilePath(Guid warehouseId, Guid productId)
         {
             return ProductFilePath(WarehouseDirectoryPath(warehouseId), productId);
         }
-        private string ProductFilePath(string warehouseFolderPath, Guid productId)
+        private static string ProductFilePath(string warehouseFolderPath, Guid productId)
         {
             return Path.Combine(warehouseFolderPath, productId.ToString() + ".json");
         }
 
-        private async Task Init()
+        private static async Task Init()
         {
             if (!Directory.Exists(DatabasePath))
                 await CreateMockStorage();
         }
 
-        private async Task CreateMockStorage()
+        private static async Task CreateMockStorage()
         {
             Directory.CreateDirectory(DatabasePath);
             var inMemoryStorage = new InMemoryStorageContext();
@@ -48,7 +48,7 @@ namespace ProductManager.Storage
             }
         }
 
-        public async Task<WarehouseDBModel> GetWarehouseAsync(Guid warehouseId)
+        public async Task<WarehouseDBModel?> GetWarehouseAsync(Guid warehouseId)
         {
             await Init();
             var filePath = WarehouseFilePath(warehouseId);
@@ -58,7 +58,7 @@ namespace ProductManager.Storage
             return JsonSerializer.Deserialize<WarehouseDBModel>(json);
         }
 
-        public async IAsyncEnumerable<WarehouseDBModel> GetWarehousesAsync()
+        public async IAsyncEnumerable<WarehouseDBModel?> GetWarehousesAsync()
         {
             await Init();
             foreach (var file in Directory.GetFiles(DatabasePath, "*.json"))
@@ -68,7 +68,7 @@ namespace ProductManager.Storage
             }
         }
 
-        public async Task<ProductDBModel> GetProductAsync(Guid productId)
+        public async Task<ProductDBModel?> GetProductAsync(Guid productId)
         {
             await Init();
             foreach (var directory in Directory.GetDirectories(DatabasePath))
@@ -92,7 +92,11 @@ namespace ProductManager.Storage
             foreach (var file in Directory.GetFiles(warehouseDirectory, "*.json"))
             {
                 var json = await File.ReadAllTextAsync(file);
-                products.Add(JsonSerializer.Deserialize<ProductDBModel>(json));
+                var product = JsonSerializer.Deserialize<ProductDBModel>(json);
+                if (product != null)
+                {
+                    products.Add(product);
+                }
             }
             return products;
         }
