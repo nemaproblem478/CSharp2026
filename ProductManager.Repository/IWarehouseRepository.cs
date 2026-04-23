@@ -6,7 +6,7 @@ namespace ProductManager.Repository
     public interface IWarehouseRepository
     {
         IAsyncEnumerable<WarehouseDBModel> GetWarehousesAsync();
-        Task<WarehouseDBModel> GetWarehouseAsync(Guid warehouseId);
+        Task<WarehouseDBModel?> GetWarehouseAsync(Guid warehouseId);
         Task SaveWarehouseAsync(WarehouseDBModel warehouse);
         Task DeleteWarehouseAsync(Guid warehouseId);
         Task<int> GetProductsByWarehouseCountAsync(Guid warehouseId);

@@ -14,13 +14,13 @@ namespace ProductManager.Repository
         private readonly IStorageContext _storageContext;
         public WarehouseRepository(IStorageContext storageContext)
         {
-            _storageContext = storageContext; ;
+            _storageContext = storageContext;
         }
         public IAsyncEnumerable<WarehouseDBModel> GetWarehousesAsync()
         {
             return _storageContext.GetWarehousesAsync();
         }
-        public Task<WarehouseDBModel> GetWarehouseAsync(Guid warehouseId)
+        public Task<WarehouseDBModel?> GetWarehouseAsync(Guid warehouseId)
         {
             return _storageContext.GetWarehouseAsync(warehouseId);
         }

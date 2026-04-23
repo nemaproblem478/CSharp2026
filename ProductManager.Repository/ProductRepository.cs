@@ -21,7 +21,7 @@ namespace ProductManager.Repository
         {
             return _storageContext.GetProductsByWarehouseAsync(warehouseId);
         }
-        public Task<ProductDBModel> GetProductAsync(Guid productId)
+        public Task<ProductDBModel?> GetProductAsync(Guid productId)
         {
             return _storageContext.GetProductAsync(productId);
         }
