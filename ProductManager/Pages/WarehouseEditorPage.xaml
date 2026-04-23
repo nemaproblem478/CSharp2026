@@ -30,7 +30,6 @@
                     FontSize="20"
                     VerticalOptions="Start"
                     ItemsSource="{Binding Locations}"
-                    ItemDisplayBinding="{Binding DisplayName}"
                     SelectedItem="{Binding SelectedLocation}"
                 />
                 <Label 

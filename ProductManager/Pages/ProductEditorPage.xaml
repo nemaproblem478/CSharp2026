@@ -44,7 +44,6 @@
                     FontSize="20"
                     VerticalOptions="Start"
                     ItemsSource="{Binding Categories}"
-                    ItemDisplayBinding="{Binding DisplayName}"
                     SelectedItem="{Binding SelectedCategory}"
                 />
                 <Label 

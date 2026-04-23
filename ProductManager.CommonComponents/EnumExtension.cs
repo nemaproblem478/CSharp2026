@@ -8,7 +8,10 @@ using System.Threading.Tasks;
 namespace ProductManager.CommonComponents
 {
     //Record for getting Enum value and display name
-    public sealed record EnumWithName<TEnum>(TEnum Value, string DisplayName) where TEnum : struct, Enum;
+    public sealed record EnumWithName<TEnum>(TEnum Value, string DisplayName) where TEnum : struct, Enum
+    {
+        public override string ToString() => DisplayName;
+    }
     
     public static class EnumExtension
     {
