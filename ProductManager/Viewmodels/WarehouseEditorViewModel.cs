@@ -22,33 +22,32 @@ namespace ProductManager.Viewmodels
 
         [ObservableProperty]
         [NotifyPropertyChangedFor(nameof(ProductCountAndTotalCostIsVisible))]
-        private bool _isEditMode;
+        public partial bool IsEditMode { get; set; }
         [ObservableProperty]
-        private string _pageTitle = "Loading...";
+        public partial string PageTitle { get; set; } = "Loading...";
 
         public bool ProductCountAndTotalCostIsVisible => IsEditMode;
 
         private Guid _warehouseId;
 
-        public List<EnumWithName<CommonComponents.Location>> Locations { get; }
+        public List<EnumWithName<CommonComponents.Location>> Locations { get; } = [.. EnumExtension.GetValuesWithNames<CommonComponents.Location>()];
 
         [ObservableProperty]
-        public string _name;
+        public partial string Name { get; set; } = string.Empty;
         [ObservableProperty]
-        public EnumWithName<CommonComponents.Location>? _selectedLocation;
+        public partial EnumWithName<CommonComponents.Location>? SelectedLocation { get; set; }
 
         [ObservableProperty]
-        public int _productCount;
+        public partial int ProductCount { get; set; }
         [ObservableProperty]
-        public double _totalCost;
+        public partial double TotalCost { get; set; }
 
         [ObservableProperty]
-        private Dictionary<string, string> _errors;
+        public partial Dictionary<string, string> Errors { get; set; } = InitErrors();
 
         public WarehouseEditorViewModel(IWarehouseService warehouseService) 
         {
             _warehouseService = warehouseService;
-            Locations = EnumExtension.GetValuesWithNames<CommonComponents.Location>().ToList();
         }
 
         public void ApplyQueryAttributes(IDictionary<string, object> query)
@@ -75,6 +74,13 @@ namespace ProductManager.Viewmodels
         {
             var warehouse = await _warehouseService.GetWarehouseAsync(id);
 
+            if (warehouse is null)
+            {
+                await Shell.Current.DisplayAlert("Error Loading Warehouse", "Warehouse not found. It might have been deleted.", "Ok");
+
+                await Shell.Current.GoToAsync("..");
+                return;
+            }
             //Initialize entries
             Name = warehouse.Name;
             SelectedLocation = warehouse.Location.GetEnumWithName();
@@ -117,16 +123,16 @@ namespace ProductManager.Viewmodels
             {
                 if (IsEditMode)
                 {
-                    var edittedWarehouse = new WarehouseDetailsDTO(_warehouseId, Name, SelectedLocation.Value, TotalCost, ProductCount);
+                    var edittedWarehouse = new WarehouseDetailsDTO(_warehouseId, Name, SelectedLocation!.Value, TotalCost, ProductCount);
                     await _warehouseService.UpdateWarehouseAsync(edittedWarehouse);
-                    await Shell.Current.GoToAsync("..");
                 }
                 else
                 {
-                    var newWarehouse = new WarehouseCreateDTO(Name, SelectedLocation.Value);
+                    var newWarehouse = new WarehouseCreateDTO(Name, SelectedLocation!.Value);
                     await _warehouseService.CreateWarehouseAsync(newWarehouse);
-                    await Shell.Current.GoToAsync("..");
                 }
+                await Shell.Current.DisplayAlert("Warehouse has been saved!", $"{Name} has been saved!", "Great!");
+                await Shell.Current.GoToAsync("..");
             }
             catch (Exception ex)
             {
@@ -136,18 +142,15 @@ namespace ProductManager.Viewmodels
             finally
             {
                 //Display confirmation message
-                await Shell.Current.DisplayAlert("Warehouse has been saved!", $"{Name} has been saved!", "Great!");
                 IsBusy = false;
             }
         }
 
-        private Dictionary<string, string> InitErrors()
+        private static Dictionary<string, string> InitErrors() => new()
         {
-            return new Dictionary<string, string>()
-            {
-                { nameof(Name), string.Empty },
-                { "Location", string.Empty }
-            };
-        }
+            { nameof(Name), string.Empty },
+            { "Location", string.Empty }
+        };
+        
     }
 }

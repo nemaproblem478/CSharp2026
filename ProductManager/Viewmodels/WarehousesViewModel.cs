@@ -18,25 +18,25 @@ namespace ProductManager.Viewmodels
     {
         private readonly IWarehouseService _warehouseService;
 
-        private List<WarehouseListDTO> _allWarehouses = new();
+        private readonly List<WarehouseListDTO> _allWarehouses = [];
 
         [ObservableProperty]
-        private ObservableCollection<WarehouseListDTO> _visibleWarehouses = new();
+        public partial ObservableCollection<WarehouseListDTO> VisibleWarehouses { get; set; } = new();
         [ObservableProperty]
-        private WarehouseListDTO _currentWarehouse;
+        public partial WarehouseListDTO? CurrentWarehouse { get; set; }
 
         [ObservableProperty]
-        private string _searchQuery;
-        public List<string> SortOptions { get; } = new()
-        {
+        public partial string SearchQuery { get; set; } = string.Empty;
+        public List<string> SortOptions { get; } = 
+        [
             "Name (A-Z)",
             "Name (Z-A)",
             "Lowest Total Cost",
             "Highest Total Cost"
-        };
+        ];
 
         [ObservableProperty]
-        private string _selectedSortOption = "Name (A-Z)";
+        public partial string SelectedSortOption { get; set; } = "Name (A-Z)";
         public WarehousesViewModel(IWarehouseService warehouseService)
         {
             _warehouseService = warehouseService;
@@ -130,14 +130,14 @@ namespace ProductManager.Viewmodels
             IsBusy = true;
             try
             {
-                if (await Shell.Current.DisplayAlert("Confirm", "Are you sure you want to delete this product?", "Yes", "No"))
+                if (await Shell.Current.DisplayAlert("Confirm", "Are you sure you want to delete this warehouse?", "Yes", "No"))
                     await _warehouseService.DeleteWarehouseAsync(warehouse.Id);
                 _allWarehouses.Remove(warehouse);
                 ApplyFiltersAndSort();
             }
             catch (Exception ex)
             {
-                await Shell.Current.DisplayAlert("Error", $"Failed to navigate to product details: {ex.Message}", "Ok");
+                await Shell.Current.DisplayAlert("Error", $"Failed to delete warehouse: {ex.Message}", "Ok");
             }
             finally
             {
@@ -151,7 +151,7 @@ namespace ProductManager.Viewmodels
 
         private void ApplyFiltersAndSort()
         {
-            if (_allWarehouses == null || !_allWarehouses.Any()) return;
+            if (_allWarehouses == null || _allWarehouses.Count == 0) return;
 
             IEnumerable<WarehouseListDTO> filteredList = _allWarehouses;
 
@@ -166,6 +166,7 @@ namespace ProductManager.Viewmodels
                 "Name (Z-A)" => filteredList.OrderByDescending(w => w.Name),
                 "Lowest Total Cost" => filteredList.OrderBy(w => w.TotalCost),
                 "Highest Total Cost" => filteredList.OrderByDescending(w => w.TotalCost),
+                _ => filteredList
             };
 
             VisibleWarehouses.Clear();

@@ -18,10 +18,10 @@ namespace ProductManager.Viewmodels
 
         [ObservableProperty]
         [NotifyPropertyChangedFor(nameof(DeleteButtonIsVisible))]
-        private bool _isEditMode;
+        public partial bool IsEditMode { get; set; }
 
         [ObservableProperty]
-        private string _pageTitle = "Loading...";
+        public partial string PageTitle { get; set; } = "Loading...";
 
         public bool DeleteButtonIsVisible => IsEditMode;
 
@@ -31,30 +31,29 @@ namespace ProductManager.Viewmodels
         public double PriceDouble { get; private set; }
         public int QuantityInt { get; private set; }
 
-        public List<EnumWithName<Category>> Categories { get; }
+        public List<EnumWithName<Category>> Categories { get; } = [.. EnumExtension.GetValuesWithNames<CommonComponents.Category>()];
 
         [ObservableProperty]
-        private string _name;
+        public partial string Name { get; set; } = string.Empty;
         [ObservableProperty]
-        private string _description;
+        public partial string Description { get; set; } = string.Empty;
         [ObservableProperty]
-        private EnumWithName<Category>? _selectedCategory;
-        [ObservableProperty]
-        [NotifyPropertyChangedFor(nameof(TotalCost))]
-        public string _quantityText;
+        public partial EnumWithName<Category>? SelectedCategory { get; set; }
         [ObservableProperty]
         [NotifyPropertyChangedFor(nameof(TotalCost))]
-        public string _priceText;
+        public partial string QuantityText { get; set; } = string.Empty;
+        [ObservableProperty]
+        [NotifyPropertyChangedFor(nameof(TotalCost))]
+        public partial string PriceText { get; set; } = string.Empty;
 
         public double TotalCost => PriceDouble * QuantityInt;
 
         [ObservableProperty]
-        private Dictionary<string, string> _errors;
+        public partial Dictionary<string, string> Errors { get; set; } = InitErrors();
 
         public ProductEditorViewModel(IProductService productService)
         {
             _productService = productService;
-            Categories = EnumExtension.GetValuesWithNames<Category>().ToList();
         }
 
         public void ApplyQueryAttributes(IDictionary<string, object> query)
@@ -84,8 +83,16 @@ namespace ProductManager.Viewmodels
         private async void LoadProductAsync(Guid id)
         {
             var product = await _productService.GetProductAsync(id);
-            _warehouseId = product.WarehouseId;
 
+            if (product is null)
+            {
+                await Shell.Current.DisplayAlert("Error Loading Product", "Product not found. It might have been deleted.", "Ok");
+
+                await Shell.Current.GoToAsync("..");
+                return;
+            }
+
+            _warehouseId = product.WarehouseId;
             //Initialize entries
             Name = product.Name;
             Description = product.Description;
@@ -150,14 +157,14 @@ namespace ProductManager.Viewmodels
             {
                 if (IsEditMode)
                 {
-                    var edittedProduct = new ProductDetailsDTO(_productId, _warehouseId, Name, Description, SelectedCategory.Value, QuantityInt, PriceDouble);
+                    var edittedProduct = new ProductDetailsDTO(_productId, _warehouseId, Name, Description, SelectedCategory!.Value, QuantityInt, PriceDouble);
                     await _productService.UpdateProductAsync(edittedProduct);
                     WeakReferenceMessenger.Default.Send(new RefreshProductsMessage());
                     await Shell.Current.GoToAsync("..");
                 }
                 else 
                 {
-                    var newProduct = new ProductCreateDTO(_warehouseId, Name, Description, SelectedCategory.Value, QuantityInt, PriceDouble);
+                    var newProduct = new ProductCreateDTO(_warehouseId, Name, Description, SelectedCategory!.Value, QuantityInt, PriceDouble);
                     await _productService.CreateProductAsync(newProduct);
                     WeakReferenceMessenger.Default.Send(new RefreshProductsMessage());
                     await Shell.Current.GoToAsync("..");
@@ -175,16 +182,13 @@ namespace ProductManager.Viewmodels
             }
         }
 
-        private Dictionary<string, string> InitErrors()
+        private static Dictionary<string, string> InitErrors() => new()
         {
-            return new Dictionary<string, string>()
-            {
-                { nameof(Name), string.Empty },
-                { nameof(Description), string.Empty },
-                { "Category", string.Empty },
-                { nameof(QuantityText), string.Empty },
-                { nameof(PriceText), string.Empty }
-            };
-        }
+            { nameof(Name), string.Empty },
+            { nameof(Description), string.Empty },
+            { "Category", string.Empty },
+            { nameof(QuantityText), string.Empty },
+            { nameof(PriceText), string.Empty }
+        };
     }
 }

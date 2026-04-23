@@ -16,28 +16,28 @@ namespace ProductManager.Viewmodels
         private readonly IWarehouseService _warehouseService;
         private readonly IProductService _productService;
 
-        private Task<WarehouseDetailsDTO> _detailsTask;
-        private Task<IEnumerable<ProductListDTO>> _productsTask;
+        private Task<WarehouseDetailsDTO?> _detailsTask = null!;
+        private Task<IEnumerable<ProductListDTO>> _productsTask = null!;
         private Guid _warehouseId;
-        private List<ProductListDTO> _allProducts = new();
+        private readonly List<ProductListDTO> _allProducts = [];
 
         [ObservableProperty]
-        private WarehouseDetailsDTO _currentWarehouse;
+        public partial WarehouseDetailsDTO? CurrentWarehouse { get; set; } = null!;
         [ObservableProperty]
-        private ObservableCollection<ProductListDTO> _visibleProducts = new();
+        public partial ObservableCollection<ProductListDTO> VisibleProducts { get; set; } = new();
 
         [ObservableProperty]
-        private string _searchQuery;
-        public List<string> SortOptions { get; } = new()
-        {
+        public partial string SearchQuery { get; set; } = string.Empty;
+        public List<string> SortOptions { get; } = 
+        [
             "Name (A-Z)",
             "Name (Z-A)",
             "Lowest Price",
             "Highest Price"
-        };
+        ];
 
         [ObservableProperty]
-        private string _selectedSortOption;
+        public partial string SelectedSortOption { get; set; } = "Name (A-Z)";
 
         public WarehouseDetailsViewModel(IWarehouseService warehouseService, IProductService productService)
         {
@@ -157,7 +157,7 @@ namespace ProductManager.Viewmodels
             IsBusy = true;
             try
             {
-                await Shell.Current.GoToAsync($"{nameof(ProductEditorPage)}", new Dictionary<string, object> { { "WarehouseId", CurrentWarehouse.Id } });
+                await Shell.Current.GoToAsync($"{nameof(ProductEditorPage)}", new Dictionary<string, object> { { "WarehouseId", CurrentWarehouse!.Id } });
             }
             catch (Exception ex)
             {
@@ -175,7 +175,7 @@ namespace ProductManager.Viewmodels
 
         private void ApplyFiltersAndSort()
         {
-            if (_allProducts == null || !_allProducts.Any()) return;
+            if (_allProducts == null || _allProducts.Count == 0) return;
 
             IEnumerable<ProductListDTO> filteredList = _allProducts;
 
@@ -190,6 +190,7 @@ namespace ProductManager.Viewmodels
                 "Name (Z-A)" => filteredList.OrderByDescending(p => p.Name),
                 "Lowest Price" => filteredList.OrderBy(p => p.Price),
                 "Highest Price" => filteredList.OrderByDescending(p => p.Price),
+                _ => filteredList
             };
 
             VisibleProducts.Clear();

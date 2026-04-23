@@ -11,7 +11,7 @@ namespace ProductManager.Viewmodels
     {
         [ObservableProperty]
         [NotifyPropertyChangedFor(nameof(IsNotBusy))]
-        private bool _isBusy = false;
+        public partial bool IsBusy { get; set; }
 
         public bool IsNotBusy => !IsBusy;
     }
